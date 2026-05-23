@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Jarvis is a liquid-glass AI assistant with an interactive background and an in-browser local model."
+    />
+    <title>Jarvis AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="backgroundCanvas" aria-hidden="true"></canvas>
+    <div class="app-backdrop" aria-hidden="true">
+      <div class="backdrop-orb orb-a"></div>
+      <div class="backdrop-orb orb-b"></div>
+      <div class="backdrop-orb orb-c"></div>
+      <div class="pointer-glow"></div>
+      <div class="noise-layer"></div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="sidebar glass-panel">
+        <div class="brand-block">
+          <div class="brand-mark">J</div>
+          <div>
+            <p class="eyebrow">Private Browser AI</p>
+            <h1>Jarvis</h1>
+          </div>
+        </div>
+
+        <button id="newChatBtn" class="action-button primary" type="button">
+          New chat
+        </button>
+
+        <section class="sidebar-section">
+          <div class="section-heading">
+            <span>Recent chats</span>
+            <span id="historyCount" class="tiny-pill">0</span>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+
+        <section class="sidebar-section">
+          <div class="section-heading">
+            <span>How it works</span>
+          </div>
+          <div class="mini-card">
+            <h2>Local model</h2>
+            <p>Jarvis runs in your browser with WebGPU, so your chat stays on your device.</p>
+          </div>
+          <div class="mini-card">
+            <h2>First run</h2>
+            <p>The first model load can take a while because the browser downloads and caches it.</p>
+          </div>
+          <div class="mini-card">
+            <h2>Best browser</h2>
+            <p>Use a recent Chrome or Edge build with WebGPU enabled for the smoothest results.</p>
+          </div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar glass-panel">
+          <div class="agent-summary">
+            <div class="agent-core">
+              <div>
+                <p class="eyebrow">Liquid Glass Assistant</p>
+                <h2>Jarvis Control Room</h2>
+              </div>
+            </div>
+            <div class="live-status">
+              <span id="statusDot" class="status-dot idle"></span>
+              <span id="statusText">Waiting for your first prompt</span>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <label class="select-wrap" for="modelSelect">
+              <span>Model</span>
+              <select id="modelSelect"></select>
+            </label>
+            <button id="clearChatBtn" class="action-button" type="button">
+              Clear
+            </button>
+            <button id="deleteChatBtn" class="action-button">Delete Chat</button>
+          </div>
+        </header>
+
+        <section id="heroPanel" class="hero glass-panel">
+          <div class="hero-copy">
+            <p class="eyebrow">ChatGPT-style layout, custom Jarvis feel</p>
+            <h3>Ask anything. Jarvis loads a real local AI model right in the browser.</h3>
+            <p>
+              This build is pure <strong>HTML</strong>, <strong>CSS</strong>, and
+              <strong>JavaScript</strong> with a liquid-glass interface, animated depth,
+              streaming replies, saved chat history, and an interactive background.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="prompt-chip" data-prompt="Explain quantum computing in simple words.">
+              Explain quantum computing simply
+            </button>
+            <button class="prompt-chip" data-prompt="Write a professional email asking for a meeting.">
+              Draft a professional email
+            </button>
+            <button class="prompt-chip" data-prompt="Give me a 7-day plan to learn JavaScript.">
+              Plan my JavaScript learning
+            </button>
+            <button class="prompt-chip" data-prompt="Create a healthy meal plan for one day.">
+              Make a healthy meal plan
+            </button>
+          </div>
+        </section>
+
+        <section class="chat-panel glass-panel">
+          <div id="compatibilityBanner" class="compatibility-banner hidden"></div>
+          <div id="messageList" class="message-list" aria-live="polite"></div>
+        </section>
+
+        <form id="composerForm" class="composer glass-panel">
+          <div class="composer-inner">
+            <textarea
+              id="promptInput"
+              rows="1"
+              maxlength="4000"
+              placeholder="Message Jarvis..."
+              aria-label="Message Jarvis"
+            ></textarea>
+            <button id="sendBtn" class="send-button" type="submit" aria-label="Send message">
+              <span>Send</span>
+            </button>
+            <button id="micBtn" type="button" class="send-button">Speak</button>
+          </div>
+          <div class="composer-footer">
+            <span id="runtimeHint">Jarvis loads on demand the first time you send a message.</span>
+            <span id="tokenHint">Streaming responses enabled</span>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+    <script>
+
+/* ================= MIC BUTTON ================= */
+
+const micBtn =
+document.getElementById("micBtn");
+
+let voiceActive = false;
+
+micBtn.addEventListener("click", async ()=>{
+
+    try{
+
+        /* ASK FOR MIC PERMISSION */
+
+        await navigator.mediaDevices.getUserMedia({
+            audio:true
+        });
+
+        /* START */
+
+        if(!voiceActive){
+
+            if(parent.startEcoVoiceControl){
+
+                parent.startEcoVoiceControl();
+
+                voiceActive = true;
+
+                micBtn.innerText =
+                "Listening...";
+
+                micBtn.style.background =
+                "#00ff88";
+
+                micBtn.style.color =
+                "#000";
+
+                console.log(
+                    "Voice Started"
+                );
+
+            }
+
+        }
+
+        /* STOP */
+
+        else{
+
+            if(parent.stopEcoVoiceControl){
+
+                parent.stopEcoVoiceControl();
+
+                voiceActive = false;
+
+                micBtn.innerText =
+                "Speak";
+
+                micBtn.style.background =
+                "";
+
+                micBtn.style.color =
+                "";
+
+                console.log(
+                    "Voice Stopped"
+                );
+
+            }
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+        alert(
+            "Microphone permission denied."
+        );
+
+    }
+
+});
+
+</script>
+  </body>
+  <link rel="stylesheet"href="style.css">
+</html>

@@ -1,0 +1,5091 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>EcoPulse | Next-Gen Sustainability</title>
+
+<link
+  href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&f[]=satoshi@300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+<style>
+
+    /* ================= AI CHAT ================= */
+
+.ai-button{
+    position:fixed;
+    
+    bottom:30px;
+    right:30px;
+
+    width:70px;
+    height:70px;
+
+    border-radius:50%;
+
+    background:var(--accent-primary);
+    color:#000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    z-index:9999;
+
+    box-shadow:
+        0 0 20px var(--accent-glow),
+        0 0 50px var(--accent-glow);
+
+    animation:aiFloat 3s ease-in-out infinite;
+}
+
+@keyframes aiFloat{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+
+.ai-chat{
+    position:fixed;
+
+    bottom:120px;
+    right:30px;
+
+    width:380px;
+    height:550px;
+
+    background:var(--bg-surface);
+
+    border:1px solid var(--border-color);
+
+    border-radius:25px;
+
+    display:none;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    z-index:9999;
+
+    box-shadow:0 0 40px rgba(0,0,0,.5);
+}
+
+.ai-chat.active{
+    display:flex;
+}
+
+.ai-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px;
+
+    background:rgba(255,255,255,.03);
+
+    border-bottom:1px solid var(--border-color);
+}
+
+.ai-header h3{
+    font-size:1.2rem;
+}
+
+#close-ai{
+    width:35px;
+    height:35px;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--accent-primary);
+    color:#000;
+
+    font-size:18px;
+
+    cursor:pointer;
+}
+
+.ai-messages{
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.ai-messages::-webkit-scrollbar{
+    display:none;
+}
+
+.ai-message{
+    padding:15px;
+
+    border-radius:18px;
+
+    line-height:1.6;
+
+    font-size:.95rem;
+
+    max-width:85%;
+}
+
+.ai-message.bot{
+    background:rgba(0,255,136,.1);
+
+    border:1px solid rgba(0,255,136,.2);
+
+    align-self:flex-start;
+}
+
+.ai-message.user{
+    background:rgba(255,255,255,.08);
+
+    align-self:flex-end;
+}
+
+.ai-input-area{
+    display:flex;
+
+    padding:15px;
+
+    border-top:1px solid var(--border-color);
+}
+
+#ai-input{
+    flex:1;
+
+    background:rgba(255,255,255,.05);
+
+    border:none;
+
+    padding:14px;
+
+    border-radius:15px;
+
+    color:white;
+
+    outline:none;
+}
+
+#send-ai{
+    margin-left:10px;
+
+    width:50px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:var(--accent-primary);
+
+    color:#000;
+
+    cursor:pointer;
+}
+/* ================= AI TOOLTIP ================= */
+
+.ai-tooltip{
+    position:fixed;
+
+    bottom:115px;
+    right:30px;
+
+    background:var(--bg-surface);
+
+    color:var(--text-primary);
+
+    padding:14px 18px;
+
+    border-radius:18px;
+
+    border:1px solid var(--border-color);
+
+    font-size:.95rem;
+
+    max-width:260px;
+
+    line-height:1.5;
+
+    z-index:9999;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,.4),
+        0 0 25px var(--accent-glow);
+
+    animation:tooltipFloat 3s ease-in-out infinite;
+}
+
+/* Speech bubble arrow */
+
+.ai-tooltip::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:-10px;
+    right:28px;
+
+    width:20px;
+    height:20px;
+
+    background:var(--bg-surface);
+
+    border-right:1px solid var(--border-color);
+    border-bottom:1px solid var(--border-color);
+
+    transform:rotate(45deg);
+}
+
+@keyframes tooltipFloat{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-6px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+/* ================= FLOATING AI BUTTON ================= */
+
+.ai-button{
+    position:fixed;
+
+    bottom:30px;
+    right:30px;
+
+    width:70px;
+    height:70px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:#000;
+
+    font-size:28px;
+
+    box-shadow:
+        0 0 20px rgba(0,255,136,.4),
+        0 0 60px rgba(0,255,136,.2);
+
+    z-index:9999;
+
+    cursor:pointer;
+
+    transition:.35s ease;
+}
+
+.ai-button:hover{
+    transform:scale(1.1) rotate(8deg);
+
+    box-shadow:
+        0 0 30px rgba(0,255,136,.6),
+        0 0 80px rgba(0,255,136,.3);
+}
+
+/* ================= MINI JARVIS POPUP ================= */
+
+.jarvis-popup{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.72);
+
+    backdrop-filter:blur(10px);
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:99999;
+}
+
+.jarvis-popup.active{
+    display:flex;
+}
+
+/* ================= WINDOW ================= */
+
+.jarvis-window{
+    position:relative;
+
+    width:95%;
+    max-width:420px;
+
+    height:82vh;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:#0a0a0c;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 0 40px rgba(0,255,136,.18),
+        0 0 100px rgba(0,255,136,.08);
+
+    animation:jarvisOpen .35s ease;
+
+    display:flex;
+    flex-direction:column;
+}
+@keyframes jarvisOpen{
+
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* ================= IFRAME ================= */
+
+.jarvis-frame{
+    width:100%;
+    height:100%;
+
+    border:none;
+
+    overflow:hidden;
+
+    background:#000;
+}
+
+/* ================= CLOSE BUTTON ================= */
+
+#close-jarvis{
+    position:absolute;
+
+    top:14px;
+    right:14px;
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(0,255,136,.15);
+
+    backdrop-filter:blur(10px);
+
+    color:#00ff88;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+    transition:.3s;
+}
+
+#close-jarvis:hover{
+    transform:rotate(90deg) scale(1.08);
+
+    background:#00ff88;
+    color:#000;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .jarvis-window{
+        width:100%;
+        height:100vh;
+
+        max-width:none;
+
+        border-radius:0;
+    }
+
+    .ai-button{
+        width:60px;
+        height:60px;
+
+        font-size:24px;
+
+        bottom:20px;
+        right:20px;
+    }
+}
+#jarvis-help{
+
+    position:fixed;
+
+    right:120px;
+
+    bottom:120px;
+
+    width:220px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(10,15,25,.92);
+
+    border:1px solid rgba(0,255,150,.3);
+
+    color:white;
+
+    z-index:9999;
+
+    display:none;
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 0 30px rgba(0,255,150,.25);
+
+}
+
+#jarvis-help.active{
+
+    display:block;
+
+}
+
+#jarvis-help h3{
+
+    color:#00ff99;
+
+    margin-bottom:10px;
+
+}
+
+#jarvis-help p{
+
+    margin:8px 0;
+
+    font-size:.95rem;
+
+}
+/* ================= WEATHER BUTTON ================= */
+
+.weather-button{
+
+    position:fixed;
+    left:30px;
+    bottom:30px;
+
+    width:70px;
+    height:70px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:white;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    z-index:9999;
+
+    box-shadow:
+    0 0 25px rgba(0,255,136,.5);
+
+    transition:.3s;
+}
+
+.weather-button:hover{
+
+    transform:scale(1.1);
+
+    box-shadow:
+    0 0 40px rgba(0,255,136,.8);
+}
+
+/* ================= WEATHER POPUP ================= */
+
+.weather-popup{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.7);
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:10000;
+}
+
+.weather-popup.active{
+
+    display:flex;
+}
+
+.weather-window{
+
+    width:90%;
+    max-width:1000px;
+
+    height:80vh;
+
+    background:#0f172a;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    border:
+    2px solid rgba(255,255,255,.1);
+
+    box-shadow:
+    0 0 50px rgba(0,255,136,.3);
+}
+
+.weather-topbar{
+
+    height:70px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 25px;
+
+    color:white;
+}
+
+.weather-topbar h3{
+
+    font-size:22px;
+}
+
+#close-weather{
+
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:white;
+
+    font-size:18px;
+}
+
+.weather-frame{
+
+    width:100%;
+    height:calc(80vh - 70px);
+
+    border:none;
+
+    background:white;
+}
+:root{
+    --bg-base:#0a0a0c;
+    --bg-surface:#121418;
+
+    --text-primary:#ffffff;
+    --text-secondary:#8b92a5;
+
+    --accent-primary:#00ff88;
+    --accent-glow:rgba(0,255,136,.3);
+
+    --border-color:rgba(255,255,255,.05);
+
+    --glass-bg:rgba(18,20,24,.6);
+    --glass-border:1px solid rgba(255,255,255,.08);
+
+    --font-display:'Clash Display',sans-serif;
+    --font-body:'Satoshi',sans-serif;
+
+    --transition-smooth:all .4s cubic-bezier(.16,1,.3,1);
+}
+
+[data-theme="light"]{
+    --bg-base:#f4f6f8;
+    --bg-surface:#ffffff;
+
+    --text-primary:#0f172a;
+    --text-secondary:#64748b;
+
+    --accent-primary:#059669;
+    --accent-glow:rgba(5,150,105,.2);
+
+    --border-color:rgba(0,0,0,.1);
+
+    --glass-bg:rgba(255,255,255,.7);
+    --glass-border:1px solid rgba(0,0,0,.05);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg-base);
+    color:var(--text-primary);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    transition:background-color .5s ease,color .5s ease;
+}
+
+/* ================= CURSOR ================= */
+
+.cursor-dot{
+    width:8px;
+    height:8px;
+    background:var(--accent-primary);
+    position:fixed;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+}
+
+.cursor-outline{
+    width:40px;
+    height:40px;
+    border:1px solid var(--accent-primary);
+    position:fixed;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9998;
+    transform:translate(-50%,-50%);
+    transition:width .2s,height .2s,background-color .2s;
+}
+
+/* ================= PRELOADER ================= */
+
+.preloader{
+    position:fixed;
+    inset:0;
+    background:var(--bg-base);
+    z-index:10000;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    transition:opacity .8s ease;
+}
+
+.loader-ring{
+    width:60px;
+    height:60px;
+    border:3px solid var(--border-color);
+    border-top-color:var(--accent-primary);
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+    margin-bottom:20px;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+/* ================= AMBIENT ================= */
+
+.ambient-orb{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(100px);
+    z-index:-1;
+    opacity:.5;
+}
+
+.orb-1{
+    width:40vw;
+    height:40vw;
+    background:var(--accent-glow);
+    top:-10%;
+    left:-10%;
+}
+
+.orb-2{
+    width:30vw;
+    height:30vw;
+    background:rgba(0,150,255,.1);
+    bottom:10%;
+    right:-5%;
+}
+
+/* ================= TYPOGRAPHY ================= */
+
+h1,h2,h3{
+    font-family:var(--font-display);
+    font-weight:600;
+}
+
+span{
+    color:var(--accent-primary);
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:1.5rem 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:var(--glass-bg);
+    backdrop-filter:blur(16px);
+
+    border-bottom:var(--glass-border);
+
+    z-index:100;
+
+    transition:var(--transition-smooth);
+}
+
+.navbar.scrolled{
+    padding:1rem 5%;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-family:var(--font-display);
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.nav-links{
+    display:flex;
+    gap:3rem;
+    list-style:none;
+}
+
+.nav-links a{
+    color:var(--text-primary);
+    text-decoration:none;
+    font-weight:500;
+    font-size:.9rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.nav-actions{
+    display:flex;
+    gap:1.5rem;
+    align-items:center;
+}
+
+#theme-toggle{
+    background:none;
+    border:none;
+    color:var(--text-primary);
+    font-size:1.2rem;
+}
+
+/* ================= BUTTONS ================= */
+
+.btn-primary{
+    background:var(--accent-primary);
+    color:#000;
+
+    padding:.8rem 2rem;
+
+    border:none;
+    border-radius:4px;
+
+    font-weight:600;
+    font-family:var(--font-body);
+
+    transition:var(--transition-smooth);
+}
+
+.btn-glow{
+    box-shadow:0 0 20px var(--accent-glow);
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 30px var(--accent-glow);
+}
+
+.btn-secondary{
+    background:transparent;
+    color:var(--text-primary);
+
+    padding:.8rem 2rem;
+
+    border:1px solid var(--border-color);
+    border-radius:4px;
+
+    transition:var(--transition-smooth);
+}
+
+.btn-secondary:hover{
+    background:var(--border-color);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:100vh;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    align-items:center;
+
+    padding:0 5%;
+    gap:4rem;
+
+    position:relative;
+}
+
+.hero-content h1{
+    font-size:clamp(3rem,6vw,5.5rem);
+    line-height:1.1;
+    margin:1.5rem 0;
+}
+
+.hero-description{
+    color:var(--text-secondary);
+    font-size:1.1rem;
+    line-height:1.6;
+
+    max-width:500px;
+
+    margin-bottom:2.5rem;
+}
+
+.badge{
+    display:inline-block;
+
+    padding:.4rem 1rem;
+
+    border:1px solid var(--accent-primary);
+
+    color:var(--accent-primary);
+
+    border-radius:50px;
+
+    font-size:.8rem;
+    letter-spacing:1px;
+}
+
+/* ================= GLASS PANEL ================= */
+
+.glass-panel{
+    background:var(--glass-bg);
+    backdrop-filter:blur(20px);
+
+    border:var(--glass-border);
+
+    border-radius:16px;
+    padding:2rem;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+
+.floating{
+    animation:float 6s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-20px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+
+.metric{
+    display:flex;
+    justify-content:space-between;
+
+    padding:1rem 0;
+
+    border-bottom:1px solid var(--border-color);
+}
+
+.metric .value{
+    font-family:var(--font-display);
+    font-size:1.5rem;
+    font-weight:600;
+}
+
+.text-green{
+    color:var(--accent-primary);
+}
+
+/* ================= FEATURES ================= */
+
+.features-section{
+    padding:10rem 5%;
+}
+
+.section-header{
+    text-align:center;
+    margin-bottom:5rem;
+}
+
+.section-header h2{
+    font-size:3rem;
+}
+
+.section-header p{
+    color:var(--text-secondary);
+    margin-top:1rem;
+}
+
+.cards-wrapper{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:2rem;
+}
+
+.feature-card{
+    background:var(--bg-surface);
+
+    border:1px solid var(--border-color);
+
+    padding:3rem 2rem;
+
+    border-radius:12px;
+
+    transition:var(--transition-smooth);
+
+    position:relative;
+    overflow:hidden;
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+    border-color:var(--accent-primary);
+}
+
+.card-icon{
+    font-size:2.5rem;
+    color:var(--accent-primary);
+    margin-bottom:1.5rem;
+}
+
+.feature-card h3{
+    margin-bottom:1rem;
+    font-size:1.4rem;
+}
+
+.feature-card p{
+    color:var(--text-secondary);
+    line-height:1.6;
+    font-size:.95rem;
+    margin-bottom:2rem;
+}
+/* ================= POPUP ================= */
+
+.protocol-popup{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.7);
+
+    backdrop-filter:blur(10px);
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    padding:2rem;
+
+    z-index:9999;
+}
+
+.protocol-popup.active{
+    display:flex;
+}
+.protocol-popup{
+    display:none;
+}
+.popup-card{
+    position:relative;
+}
+
+.popup-card{
+    position:relative;
+
+    width:90%;
+    max-width:900px;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    background:var(--bg-surface);
+
+    border:1px solid var(--border-color);
+
+    box-shadow:0 0 40px rgba(0,0,0,.5);
+}
+
+@keyframes popupShow{
+
+    from{
+        opacity:0;
+        transform:translateY(30px) scale(.95);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+#close-popup{
+    position:absolute;
+    top:15px;
+    right:15px;
+
+    width:45px;
+    height:45px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#00ff88;
+    color:#000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:1.4rem;
+    font-weight:bold;
+
+    z-index:999999;
+
+    cursor:pointer;
+
+    box-shadow:0 0 20px rgba(0,255,136,.5);
+
+    transition:.3s ease;
+}
+
+#close-popup:hover{
+    transform:scale(1.1) rotate(90deg);
+}
+.popup-header{
+    text-align:center;
+    margin-bottom:3rem;
+}
+
+.popup-header h2{
+    font-size:3rem;
+    margin-bottom:1rem;
+}
+
+.popup-header p{
+    color:var(--text-secondary);
+    line-height:1.7;
+}
+
+.mode-switcher{
+    display:flex;
+    justify-content:center;
+    gap:1rem;
+    margin-bottom:2rem;
+    flex-wrap:wrap;
+}
+
+.mode-btn{
+    background:var(--bg-base);
+
+    border:1px solid var(--border-color);
+
+    color:var(--text-primary);
+
+    padding:.8rem 1.5rem;
+
+    border-radius:12px;
+
+    transition:.3s;
+}
+
+.mode-btn.active{
+    background:var(--accent-primary);
+    color:#000;
+}
+
+.graph-container{
+    position:relative;
+
+    height:320px;
+
+    background:var(--glass-bg);
+
+    border:1px solid var(--border-color);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-bottom:3rem;
+}
+
+.graph-grid{
+    position:absolute;
+    inset:0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.04) 1px,
+            transparent 1px
+        );
+
+    background-size:50px 50px;
+}
+
+.graph-svg{
+    width:100%;
+    height:100%;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:2rem;
+
+    margin-bottom:2rem;
+}
+
+.info-box{
+    background:var(--bg-base);
+
+    border:1px solid var(--border-color);
+
+    border-radius:20px;
+
+    padding:2rem;
+
+    text-align:center;
+}
+
+.info-box h3{
+    color:var(--accent-primary);
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+.info-box p{
+    color:var(--text-secondary);
+}
+
+.protocol-info{
+    background:var(--glass-bg);
+
+    border:1px solid var(--border-color);
+
+    border-radius:20px;
+
+    padding:2rem;
+}
+
+.protocol-info h3{
+    margin-bottom:1rem;
+}
+
+.protocol-info p{
+    color:var(--text-secondary);
+    line-height:1.8;
+}
+
+.card-progress{
+    height:4px;
+    background:var(--border-color);
+    border-radius:2px;
+    width:100%;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--accent-primary);
+    border-radius:2px;
+}
+#close-popup{
+    position:absolute;
+    top:20px;
+    right:20px;
+
+    width:55px;
+    height:55px;
+
+    background:white;
+    color:black;
+
+    border:3px solid #00ff88;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:28px;
+    font-weight:900;
+
+    z-index:999999999;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 20px rgba(0,255,136,.7),
+        0 0 40px rgba(0,255,136,.3);
+
+    transition:.3s ease;
+}
+
+#close-popup:hover{
+    transform:scale(1.12) rotate(90deg);
+}
+
+/* ================= CALCULATOR ================= */
+
+.interactive-section{
+    padding:5rem 5%;
+    display:flex;
+    justify-content:center;
+}
+
+.calculator-container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4rem;
+
+    background:var(--bg-surface);
+
+    padding:4rem;
+
+    border-radius:24px;
+
+    border:1px solid var(--border-color);
+
+    width:100%;
+    max-width:1200px;
+}
+
+/* ================= FOCUS CARDS ================= */
+
+#Focus{
+    padding:8rem 5%;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:var(--glass-bg);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid var(--border-color);
+
+    padding:30px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    top:-50%;
+    left:-50%;
+
+    width:200%;
+    height:200%;
+
+    background:linear-gradient(
+        45deg,
+        transparent,
+        var(--accent-primary),
+        transparent
+    );
+
+    transform:rotate(45deg);
+
+    opacity:0;
+
+    transition:.5s;
+}
+
+.card:hover::before{
+    opacity:.4;
+}
+
+.card:hover{
+    transform:translateY(-15px) scale(1.05);
+    box-shadow:0 0 35px var(--accent-glow);
+}
+
+.card img{
+    width:70px;
+    margin-bottom:20px;
+}
+
+.card p{
+    color:var(--text-secondary);
+    margin-top:10px;
+}
+
+
+/* ================= FOCUS POPUP ================= */
+
+.focus-popup{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(10px);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:9999;
+}
+
+.focus-popup.active{
+    display:flex;
+}
+
+.focus-popup-card{
+    position:relative;
+
+    width:90%;
+    max-width:850px;
+
+    background:var(--bg-surface);
+
+    border:1px solid var(--border-color);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    overflow:hidden;
+
+    animation:popupShow .4s ease;
+}
+
+@keyframes popupShow{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+#close-focus-popup{
+    position:absolute;
+    top:15px;
+    right:15px;
+
+    width:40px;
+    height:40px;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--accent-primary);
+    color:#000;
+
+    font-size:20px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.focus-top h2{
+    font-size:2.5rem;
+    margin-bottom:20px;
+}
+
+.focus-top p{
+    color:var(--text-secondary);
+    line-height:1.8;
+    font-size:1.05rem;
+}
+
+.focus-stats{
+    margin-top:40px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:20px;
+}
+
+.focus-stat-box{
+    background:rgba(255,255,255,.03);
+
+    border:1px solid var(--border-color);
+
+    padding:25px;
+
+    border-radius:20px;
+
+    text-align:center;
+}
+
+.focus-stat-box h3{
+    font-size:2rem;
+    color:var(--accent-primary);
+
+    margin-bottom:10px;
+}
+
+.focus-stat-box p{
+    color:var(--text-secondary);
+}
+/* ================= STATS ================= */
+
+#stats{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+
+    background:var(--bg-surface);
+
+    padding:4rem 5%;
+}
+
+.stat{
+    text-align:center;
+    margin:30px;
+}
+
+.stat h3{
+    font-size:3.5rem;
+    color:var(--accent-primary);
+
+    text-shadow:0 0 15px var(--accent-glow);
+}
+
+.stat p{
+    color:var(--text-secondary);
+    margin-top:10px;
+}
+
+/* ================= STATS POPUP ================= */
+
+.stats-popup{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.75);
+
+    backdrop-filter:blur(10px);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:9999;
+}
+
+.stats-popup.active{
+    display:flex;
+}
+
+.stats-popup-card{
+    position:relative;
+
+    width:90%;
+    max-width:850px;
+
+    background:var(--bg-surface);
+
+    border:1px solid var(--border-color);
+
+    border-radius:25px;
+
+    padding:40px;
+}
+
+#close-stats-popup{
+    position:absolute;
+    top:15px;
+    right:15px;
+
+    width:40px;
+    height:40px;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--accent-primary);
+    color:#000;
+
+    font-size:20px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.stats-popup-card h2{
+    font-size:2.5rem;
+    margin-bottom:20px;
+}
+
+.stats-popup-card p{
+    color:var(--text-secondary);
+    line-height:1.8;
+}
+
+.stats-details{
+    margin-top:35px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:20px;
+}
+
+.stats-box{
+    background:rgba(255,255,255,.03);
+
+    border:1px solid var(--border-color);
+
+    border-radius:20px;
+
+    padding:25px;
+
+    text-align:center;
+}
+
+.stats-box h3{
+    color:var(--accent-primary);
+
+    font-size:2rem;
+
+    margin-bottom:10px;
+}
+
+/* ================= FORM ================= */
+
+.input-group{
+    margin-bottom:2rem;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:1rem;
+    font-weight:500;
+}
+
+.slider{
+    width:100%;
+    appearance:none;
+
+    height:6px;
+    border-radius:3px;
+
+    background:var(--border-color);
+
+    outline:none;
+}
+
+.slider::-webkit-slider-thumb{
+    appearance:none;
+
+    width:20px;
+    height:20px;
+
+    border-radius:50%;
+
+    background:var(--accent-primary);
+}
+
+.slider-val{
+    float:right;
+    margin-top:.5rem;
+
+    font-family:var(--font-display);
+    font-weight:600;
+
+    color:var(--accent-primary);
+}
+
+.result-display{
+    margin-top:3rem;
+    padding-top:2rem;
+
+    border-top:1px solid var(--border-color);
+}
+
+.result-number{
+    font-size:4rem;
+    font-family:var(--font-display);
+    font-weight:700;
+
+    color:var(--text-primary);
+
+    margin:1rem 0;
+}
+
+.feedback-text{
+    font-size:1.1rem;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    padding:5rem 5% 2rem;
+
+    background:var(--bg-surface);
+
+    border-top:1px solid var(--border-color);
+}
+
+.footer-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:4rem;
+
+    margin-bottom:4rem;
+}
+
+.footer-links a{
+    display:block;
+
+    color:var(--text-secondary);
+
+    text-decoration:none;
+
+    margin-bottom:.8rem;
+}
+
+.footer-links a:hover{
+    color:var(--accent-primary);
+}
+
+.footer-bottom{
+    text-align:center;
+    color:var(--text-secondary);
+    font-size:.9rem;
+}
+
+/* ================= MUSIC ADDITIONS ================= */
+
+.music-button{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%);
+    z-index:10001;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 18px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    background:var(--bg-surface);
+    color:var(--text-primary);
+    border:1px solid var(--border-color);
+}
+
+.music-button svg{
+    width:20px;
+    height:20px;
+    display:block;
+}
+
+.music-panel{
+    position:fixed;
+    left:50%;
+    bottom:95px;
+    transform:translateX(-50%);
+    z-index:10001;
+    display:none;
+    width:min(92vw,360px);
+    padding:14px;
+    background:var(--bg-surface);
+    border:1px solid var(--border-color);
+    border-radius:14px;
+}
+
+.music-panel.active{
+    display:block;
+}
+
+.music-panel-controls{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.music-panel-controls button{
+    border:1px solid var(--border-color);
+    background:rgba(255,255,255,.05);
+    color:var(--text-primary);
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#music-input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--border-color);
+    background:rgba(255,255,255,.05);
+    color:var(--text-primary);
+    outline:none;
+}
+
+#music-status{
+    margin-top:10px;
+    font-size:.9rem;
+    color:var(--text-secondary);
+    line-height:1.5;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:968px){
+
+    .hero,
+    .calculator-container{
+        grid-template-columns:1fr;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero-content{
+        text-align:center;
+        margin-top:6rem;
+    }
+
+    .hero-description{
+        margin:1.5rem auto;
+    }
+
+    #stats{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+
+@media(max-width:600px){
+
+    .music-button{
+        bottom:20px;
+    }
+
+    .music-panel{
+        bottom:85px;
+    }
+}
+</style>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- AI BUTTON -->
+
+<div class="ai-button" id="ai-button">
+    <i class="fa-solid fa-robot"></i>
+</div>
+<div class="ai-tooltip" id="ai-tooltip">
+    I am Jarvis, EcoPulse's Personal AI
+</div>
+<div class="jarvis-popup" id="jarvis-popup">
+    <!-- JARVIS HELP -->
+
+    <div id="jarvis-help">
+
+        <h3>Jarvis Commands</h3>
+
+        <p>“show stats”</p>
+
+        <p>“open energy”</p>
+
+        <p>“open water”</p>
+
+        <p>“open forest”</p>
+
+        <p>“light mode”</p>
+
+        <p>“dark mode”</p>
+
+        <p>“scroll down”</p>
+
+    </div>
+
+    <!-- JARVIS WINDOW -->
+
+    <div class="jarvis-window">
+
+        <div class="jarvis-topbar">
+
+            <button id="close-jarvis">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <iframe
+            src="jarvis.html"
+            class="jarvis-frame">
+        </iframe>
+
+    </div>
+
+</div>
+<!-- AI CHAT -->
+
+<div class="ai-chat" id="ai-chat">
+
+    <div class="ai-header">
+
+        <h3>EcoPulse AI</h3>
+
+        <button id="close-ai">✕</button>
+
+    </div>
+
+    <div class="ai-messages" id="ai-messages">
+
+        <div class="ai-message bot">
+            Hello. I am EcoPulse AI. Ask me anything about sustainability, climate, energy, forests, or carbon emissions.
+        </div>
+
+    </div>
+
+    <div class="ai-input-area">
+
+        <input
+            type="text"
+            id="ai-input"
+            placeholder="Ask EcoPulse AI..."
+        >
+
+        <button id="send-ai">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+
+    </div>
+
+</div>
+<!-- WEATHER BUTTON -->
+
+<div class="weather-button" id="weather-button">
+    <i class="fa-solid fa-cloud-sun"></i>
+</div>
+
+<!-- MUSIC BUTTON -->
+
+<button class="music-button" id="music-button" type="button" aria-label="Open music controls">
+    <i class='fab fa-spotify' style="font-size: 24px;"></i>
+</button>
+
+<div class="music-panel" id="music-panel">
+    <input
+        type="text"
+        id="music-input"
+        placeholder="Play a song or type like phonk, rap, chill"
+    >
+    <div class="music-panel-controls">
+        <button id="music-play-btn" type="button">Play</button>
+        <button id="music-pause-btn" type="button">Pause</button>
+        <button id="music-stop-btn" type="button">Stop</button>
+    </div>
+    <div id="music-status">Ready for voice commands like “play attention” or “play phonk music”.</div>
+    <audio id="jarvis-music-player" preload="none"></audio>
+</div>
+<!-- ================= FIREBASE ================= -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<!-- ================= MULTICHAT BUTTON ================= -->
+
+<button class="multichat-button" id="multichat-button">
+
+    <i class="fa-solid fa-comments"></i>
+
+</button>
+
+<!-- ================= MULTICHAT POPUP ================= -->
+
+<div class="multichat-popup" id="multichat-popup">
+
+    <div class="multichat-header">
+
+        <h3>EcoPulse Global Chat</h3>
+
+        <button id="close-multichat">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+    <!-- ================= LOGIN ================= -->
+
+    <div class="multichat-login" id="multichat-login">
+
+        <button id="google-login">
+
+            <i class="fab fa-google"></i>
+
+            Sign In With Google
+
+        </button>
+
+    </div>
+
+    <!-- ================= CHAT ROOM ================= -->
+
+    <div class="multichat-room" id="multichat-room">
+
+        <div class="multichat-user" id="multichat-user"></div>
+
+        <div class="multichat-messages" id="multichat-messages"></div>
+
+        <div class="multichat-input-area">
+
+            <input
+                type="text"
+                id="multichat-input"
+                placeholder="Type message..."
+            >
+
+            <button id="send-multichat">
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CSS ================= -->
+
+<style>
+
+/* ================= BUTTON ================= */
+
+.multichat-button{
+
+    position:fixed;
+
+    right:95px;
+    bottom:100px;
+
+    width:60px;
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:99999;
+
+    box-shadow:
+    0 0 30px rgba(0,255,136,.5);
+
+}
+
+/* ================= POPUP ================= */
+
+.multichat-popup{
+
+    position:fixed;
+
+    right:95px;
+    bottom:170px;
+
+    width:350px;
+    height:520px;
+
+    background:
+    rgba(10,10,10,.96);
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    display:none;
+
+    flex-direction:column;
+
+    z-index:99999;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+}
+
+.multichat-popup.active{
+
+    display:flex;
+
+}
+
+/* ================= HEADER ================= */
+
+.multichat-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+.multichat-header h3{
+
+    color:white;
+
+    margin:0;
+
+}
+
+#close-multichat{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+/* ================= LOGIN ================= */
+
+.multichat-login{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+#google-login{
+
+    border:none;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+}
+
+/* ================= ROOM ================= */
+
+.multichat-room{
+
+    display:none;
+
+    flex-direction:column;
+
+    height:100%;
+
+}
+
+/* ================= USER ================= */
+
+.multichat-user{
+
+    color:#00ff88;
+
+    padding:12px;
+
+    font-size:12px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+}
+
+/* ================= MESSAGES ================= */
+
+.multichat-messages{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.chat-wrap{
+
+    display:flex;
+
+    flex-direction:column;
+
+    max-width:80%;
+
+}
+
+.chat-wrap.me{
+
+    align-self:flex-end;
+
+}
+
+.chat-wrap.other{
+
+    align-self:flex-start;
+
+}
+
+.chat-bubble{
+
+    padding:12px 16px;
+
+    border-radius:18px;
+
+    font-size:14px;
+
+    line-height:1.4;
+
+}
+
+.chat-wrap.me .chat-bubble{
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:black;
+
+    border-bottom-right-radius:6px;
+
+}
+
+.chat-wrap.other .chat-bubble{
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+    border-bottom-left-radius:6px;
+
+}
+
+.chat-time{
+
+    margin-top:4px;
+
+    font-size:11px;
+
+    opacity:.7;
+
+    color:white;
+
+}
+
+/* ================= INPUT ================= */
+
+.multichat-input-area{
+
+    display:flex;
+
+    gap:10px;
+
+    padding:15px;
+
+    border-top:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+#multichat-input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+}
+
+#send-multichat{
+
+    width:48px;
+    height:48px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+}
+
+</style>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* ================= FIREBASE CONFIG ================= */
+
+const firebaseConfig = {
+
+    apiKey: "YOUR_API_KEY",
+
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+    projectId: "YOUR_PROJECT_ID",
+
+    storageBucket: "YOUR_PROJECT.appspot.com",
+
+    messagingSenderId: "XXXX",
+
+    appId: "XXXX"
+
+};
+
+/* ================= INIT ================= */
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+/* ================= ELEMENTS ================= */
+
+const multichatButton =
+document.getElementById("multichat-button");
+
+const multichatPopup =
+document.getElementById("multichat-popup");
+
+const closeMultichat =
+document.getElementById("close-multichat");
+
+const googleLogin =
+document.getElementById("google-login");
+
+const multichatLogin =
+document.getElementById("multichat-login");
+
+const multichatRoom =
+document.getElementById("multichat-room");
+
+const multichatUser =
+document.getElementById("multichat-user");
+
+const multichatMessages =
+document.getElementById("multichat-messages");
+
+const multichatInput =
+document.getElementById("multichat-input");
+
+const sendMultichat =
+document.getElementById("send-multichat");
+
+/* ================= OPEN ================= */
+
+multichatButton.addEventListener("click",()=>{
+
+    multichatPopup.classList.add("active");
+
+});
+
+/* ================= CLOSE ================= */
+
+closeMultichat.addEventListener("click",()=>{
+
+    multichatPopup.classList.remove("active");
+
+});
+
+/* ================= GOOGLE LOGIN ================= */
+
+googleLogin.addEventListener("click",async()=>{
+
+    const provider =
+    new firebase.auth.GoogleAuthProvider();
+
+    try{
+
+        await auth.signInWithPopup(provider);
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        alert(error.message);
+
+    }
+
+});
+
+/* ================= AUTH ================= */
+
+auth.onAuthStateChanged(user=>{
+
+    if(user){
+
+        multichatLogin.style.display =
+        "none";
+
+        multichatRoom.style.display =
+        "flex";
+
+        multichatUser.innerText =
+        `Logged in as ${user.email}`;
+
+        loadMessages(user);
+
+    }
+
+    else{
+
+        multichatLogin.style.display =
+        "flex";
+
+        multichatRoom.style.display =
+        "none";
+
+    }
+
+});
+
+/* ================= SEND MESSAGE ================= */
+
+async function sendMessage(){
+
+    const text =
+    multichatInput.value.trim();
+
+    if(text === "") return;
+
+    const user =
+    auth.currentUser;
+
+    if(!user){
+
+        alert("Please login first");
+
+        return;
+
+    }
+
+    try{
+
+        await db.collection("messages")
+        .add({
+
+            text:text,
+
+            email:user.email,
+
+            uid:user.uid,
+
+            created:Date.now()
+
+        });
+
+        multichatInput.value = "";
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+/* ================= SEND BUTTON ================= */
+
+sendMultichat.addEventListener(
+    "click",
+    sendMessage
+);
+
+/* ================= ENTER ================= */
+
+multichatInput.addEventListener(
+    "keypress",
+    (e)=>{
+
+        if(e.key === "Enter"){
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+/* ================= LOAD MESSAGES ================= */
+
+function loadMessages(currentUser){
+
+    db.collection("messages")
+
+    .orderBy("created")
+
+    .onSnapshot(snapshot=>{
+
+        multichatMessages.innerHTML = "";
+
+        snapshot.forEach(doc=>{
+
+            const data =
+            doc.data();
+
+            const wrap =
+            document.createElement("div");
+
+            wrap.className =
+            data.uid === currentUser.uid
+            ? "chat-wrap me"
+            : "chat-wrap other";
+
+            const bubble =
+            document.createElement("div");
+
+            bubble.className =
+            "chat-bubble";
+
+            bubble.innerText =
+            data.text;
+
+            const time =
+            document.createElement("div");
+
+            time.className =
+            "chat-time";
+
+            const date =
+            new Date(data.created);
+
+            time.innerText =
+            `${data.email} • ${date.toLocaleTimeString([],{
+                hour:"2-digit",
+                minute:"2-digit"
+            })}`;
+
+            wrap.appendChild(bubble);
+
+            wrap.appendChild(time);
+
+            multichatMessages.appendChild(wrap);
+
+        });
+
+        multichatMessages.scrollTop =
+        multichatMessages.scrollHeight;
+
+    });
+
+}
+
+</script>
+<!-- WEATHER POPUP -->
+
+<div class="weather-popup" id="weather-popup">
+
+    <div class="weather-window">
+
+        <div class="weather-topbar">
+
+            <h3>Weather Center</h3>
+
+            <button id="close-weather">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <!-- YOUR WEATHER FILE -->
+
+        <iframe
+            src="waetherPro.html"
+            class="weather-frame">
+        </iframe>
+
+    </div>
+
+</div>
+<body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+<div class="preloader" id="preloader">
+    <div class="loader-ring"></div>
+    <span class="loader-text">Initializing EcoPulse...</span>
+</div>
+
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
+
+<nav class="navbar" id="navbar">
+
+    <div class="logo">
+        <i class="fa-solid fa-leaf"></i>
+        ECO<span>PULSE</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#home" class="hover-target">Home</a></li>
+        <li><a href="#mission" class="hover-target">Initiatives</a></li>
+        <li><a href="#calculator" class="hover-target">Carbon Model</a></li>
+        <li><a href="#Focus" class="hover-target">Focus</a></li>
+        <li><a href="#stats" class="hover-target">Stats</a></li>
+    </ul>
+
+    <div class="nav-actions">
+
+        <button id="theme-toggle" class="hover-target">
+            <i class="fa-solid fa-sun"></i>
+        </button>
+
+        <a href="#join" class="btn-primary hover-target">
+            Deploy Action
+        </a>
+
+    </div>
+
+</nav>
+
+<main>
+
+<section id="home" class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            Version 2.0.4 | Global Impact Live
+        </div>
+
+        <h1>
+            Rewriting the Future.
+        </h1>
+
+        <p class="hero-description">
+            We are engineering a sustainable timeline.
+            Join the world's most advanced network of eco-innovators.
+        </p>
+
+        <div class="hero-cta">
+
+            <button class="btn-primary hover-target btn-glow" id="initiateProjectBtn">
+                Initialize Project
+            </button>
+
+            <button class="btn-secondary hover-target" id="viewDataBtn">
+                <i class="fa-solid fa-play"></i>
+                View Data
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="glass-panel floating">
+
+            <div class="panel-header">
+                Live Earth Metrics
+            </div>
+
+            <div class="panel-body">
+
+                <div class="metric">
+                    <span class="label">Co2 Offset</span>
+                    <span class="value dynamic-counter" data-target="849302">0</span>T
+                </div>
+
+                <div class="metric">
+                    <span class="label">Grid Power</span>
+                    <span class="value text-green">84% Renew</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="mission" class="features-section">
+
+    <div class="section-header">
+
+        <h2>
+            Core <span>Protocols</span>
+        </h2>
+
+        <p>
+            Deploying cutting-edge solutions across three main verticals.
+        </p>
+
+    </div>
+
+    <div class="cards-wrapper">
+
+        <div class="feature-card hover-target">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-solar-panel"></i>
+            </div>
+
+            <h3>Energy Grid Override</h3>
+
+            <p>
+                Transitioning urban infrastructures to decentralized,
+                AI-optimized solar microgrids.
+            </p>
+
+            <div class="card-progress">
+                <div class="progress-fill" style="width:65%"></div>
+            </div>
+
+        </div>
+
+        <div class="feature-card hover-target">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+
+            <h3>Hydration Matrices</h3>
+
+            <p>
+                Automated drone fleets actively removing micro-plastics.
+            </p>
+
+            <div class="card-progress">
+                <div class="progress-fill" style="width:42%"></div>
+            </div>
+
+        </div>
+
+        <div class="feature-card hover-target">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+
+            <h3>Predictive Forestry</h3>
+
+            <p>
+                Machine-learning models identifying optimal soil conditions.
+            </p>
+
+            <div class="card-progress">
+                <div class="progress-fill" style="width:89%"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- =========================
+PUT THIS RIGHT BELOW
+THE CORE PROTOCOLS SECTION
+========================= -->
+
+<section id="protocol-popup" class="protocol-popup">
+
+    <div class="popup-card">
+
+         <button id="close-popup">✕</button>
+
+        <div class="popup-header">
+
+            <h2 id="popup-title">
+                Energy Grid <span>Override</span>
+            </h2>
+
+            <p id="popup-description">
+                Smart renewable energy distribution system.
+            </p>
+
+        </div>
+
+        <div class="mode-switcher">
+
+            <button class="mode-btn active" data-mode="1">
+                1Y
+            </button>
+
+            <button class="mode-btn" data-mode="5">
+                5Y
+            </button>
+
+            <button class="mode-btn" data-mode="10">
+                10Y
+            </button>
+
+            <button class="mode-btn" data-mode="max">
+                MAX
+            </button>
+
+        </div>
+
+        <div class="graph-container">
+
+            <div class="graph-grid"></div>
+
+            <svg class="graph-svg" viewBox="0 0 800 300">
+
+                <polyline
+                    id="graph-line"
+                    fill="none"
+                    stroke="var(--accent-primary)"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                ></polyline>
+
+            </svg>
+
+        </div>
+
+        <div class="stats-grid">
+
+            <div class="info-box">
+                <h3 id="popup-stat1">84%</h3>
+                <p>Efficiency</p>
+            </div>
+
+            <div class="info-box">
+                <h3 id="popup-stat2">2.3M</h3>
+                <p>People Impacted</p>
+            </div>
+
+            <div class="info-box">
+                <h3 id="popup-stat3">-45%</h3>
+                <p>Carbon Reduction</p>
+            </div>
+
+        </div>
+
+        <div class="protocol-info">
+
+            <h3>
+                System Overview
+            </h3>
+
+            <p id="popup-info">
+                Detailed information appears here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="calculator" class="interactive-section">
+
+    <div class="calculator-container">
+
+        <div class="calc-info">
+
+            <h2>
+                Personal Impact <span>Model</span>
+            </h2>
+
+            <p>
+                Input your weekly metrics to generate
+                a predictive carbon footprint analysis.
+            </p>
+
+        </div>
+
+        <div class="calc-form">
+
+            <div class="input-group">
+
+                <label>Weekly Driving (Miles)</label>
+
+                <input
+                    type="range"
+                    id="drive-input"
+                    min="0"
+                    max="500"
+                    value="100"
+                    class="slider hover-target"
+                />
+
+                <span id="drive-val" class="slider-val">100</span>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Meat Consumption (Meals/Week)</label>
+
+                <input
+                    type="range"
+                    id="meat-input"
+                    min="0"
+                    max="21"
+                    value="5"
+                    class="slider hover-target"
+                />
+
+                <span id="meat-val" class="slider-val">5</span>
+
+            </div>
+
+            <div class="result-display">
+
+                <h3>Projected Annual Footprint:</h3>
+
+                <div class="result-number">
+                    <span id="total-carbon">4.2</span>
+                    Tons
+                </div>
+
+                <p id="calc-feedback" class="feedback-text text-green">
+                    Optimal. You are below the global average.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="Focus">
+
+    <div class="cards">
+
+        <div class="card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/2917/2917990.png">
+
+            <h3>Clean Air</h3>
+
+            <p>
+                Reduce pollution and protect lungs.
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/4149/4149641.png">
+
+            <h3>Pure Water</h3>
+
+            <p>
+                Safe water for every life.
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png">
+
+            <h3>Wildlife</h3>
+
+            <p>
+                Protect nature’s beauty.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<div class="focus-popup" id="focus-popup">
+
+    <div class="focus-popup-card">
+
+        <button id="close-focus-popup">✕</button>
+
+        <div class="focus-top">
+
+            <h2 id="focus-title"></h2>
+
+            <p id="focus-description"></p>
+
+        </div>
+
+        <div class="focus-stats">
+
+            <div class="focus-stat-box">
+                <h3 id="focus-stat1"></h3>
+                <p id="focus-label1"></p>
+            </div>
+
+            <div class="focus-stat-box">
+                <h3 id="focus-stat2"></h3>
+                <p id="focus-label2"></p>
+            </div>
+
+            <div class="focus-stat-box">
+                <h3 id="focus-stat3"></h3>
+                <p id="focus-label3"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<section id="stats">
+
+    <div class="stat">
+        <h3 id="trees">15000</h3>
+        <p>Trees Planted</p>
+    </div>
+
+    <div class="stat">
+        <h3 id="water">98000</h3>
+        <p>Liters Water Saved</p>
+    </div>
+
+    <div class="stat">
+        <h3 id="carbon">5000</h3>
+        <p>CO₂ Reduced (kg)</p>
+    </div>
+
+</section>
+<div class="stats-popup" id="stats-popup">
+
+    <div class="stats-popup-card">
+
+        <button id="close-stats-popup">✕</button>
+
+        <h2 id="stats-popup-title"></h2>
+
+        <p id="stats-popup-description"></p>
+
+        <div class="stats-details">
+
+            <div class="stats-box">
+                <h3 id="stats-box1"></h3>
+                <p id="stats-box1-label"></p>
+            </div>
+
+            <div class="stats-box">
+                <h3 id="stats-box2"></h3>
+                <p id="stats-box2-label"></p>
+            </div>
+
+            <div class="stats-box">
+                <h3 id="stats-box3"></h3>
+                <p id="stats-box3-label"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</main>
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div class="footer-brand">
+
+            <h3>
+                ECO<span>PULSE</span>
+            </h3>
+
+            <p>
+                Code that cares for the planet.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <h4>Architecture</h4>
+
+            <a href="#">Documentation</a>
+            <a href="#">API Access</a>
+            <a href="#">Open Source</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 EcoPulse Systems.</p>
+    </div>
+
+</footer>
+
+<script>
+const App = {
+
+    state:{
+        theme:'dark',
+        calculator:{
+            drive:100,
+            meat:5
+        }
+    },
+
+    init(){
+
+        this.cacheDOM();
+        this.bindEvents();
+        this.initPreloader();
+        this.initCursor();
+        this.initObserver();
+        this.calculateFootprint();
+    },
+
+    cacheDOM(){
+
+        this.html=document.documentElement;
+
+        this.preloader=document.getElementById('preloader');
+
+        this.cursorDot=document.querySelector('.cursor-dot');
+        this.cursorOutline=document.querySelector('.cursor-outline');
+
+        this.hoverTargets=document.querySelectorAll('.hover-target');
+
+        this.themeBtn=document.getElementById('theme-toggle');
+
+        this.navbar=document.getElementById('navbar');
+
+        this.driveInput=document.getElementById('drive-input');
+        this.meatInput=document.getElementById('meat-input');
+
+        this.driveVal=document.getElementById('drive-val');
+        this.meatVal=document.getElementById('meat-val');
+
+        this.totalOutput=document.getElementById('total-carbon');
+
+        this.feedbackText=document.getElementById('calc-feedback');
+
+        this.counters=document.querySelectorAll('.dynamic-counter');
+    },
+
+    bindEvents(){
+
+        this.themeBtn.addEventListener(
+            'click',
+            ()=>this.toggleTheme()
+        );
+
+        window.addEventListener(
+            'scroll',
+            ()=>{
+                requestAnimationFrame(
+                    ()=>this.handleScroll()
+                );
+            }
+        );
+
+        this.driveInput.addEventListener(
+            'input',
+            (e)=>this.updateCalcState('drive',e.target.value)
+        );
+
+        this.meatInput.addEventListener(
+            'input',
+            (e)=>this.updateCalcState('meat',e.target.value)
+        );
+    },
+
+    initPreloader(){
+
+        window.addEventListener('load',()=>{
+
+            setTimeout(()=>{
+
+                this.preloader.style.opacity='0';
+
+                setTimeout(()=>{
+                    this.preloader.remove();
+                },800);
+
+            },1000);
+
+        });
+
+    },
+
+    initCursor(){
+
+        window.addEventListener('mousemove',(e)=>{
+
+            const x=e.clientX;
+            const y=e.clientY;
+
+            this.cursorDot.style.left=`${x}px`;
+            this.cursorDot.style.top=`${y}px`;
+
+            this.cursorOutline.animate(
+                {
+                    left:`${x}px`,
+                    top:`${y}px`
+                },
+                {
+                    duration:150,
+                    fill:'forwards'
+                }
+            );
+
+        });
+
+        this.hoverTargets.forEach(target=>{
+
+            target.addEventListener('mouseenter',()=>{
+
+                this.cursorOutline.style.width='60px';
+                this.cursorOutline.style.height='60px';
+
+                this.cursorOutline.style.backgroundColor=
+                    'rgba(0,255,136,.1)';
+
+            });
+
+            target.addEventListener('mouseleave',()=>{
+
+                this.cursorOutline.style.width='40px';
+                this.cursorOutline.style.height='40px';
+
+                this.cursorOutline.style.backgroundColor='transparent';
+
+            });
+
+        });
+
+    },
+
+    handleScroll(){
+
+        if(window.scrollY>50){
+            this.navbar.classList.add('scrolled');
+        }else{
+            this.navbar.classList.remove('scrolled');
+        }
+
+        const heroContent=document.querySelector('.hero-content');
+
+        if(heroContent){
+
+            const scrollPos=window.scrollY;
+
+            heroContent.style.transform=
+                `translateY(${scrollPos*.2}px)`;
+
+            heroContent.style.opacity=
+                1-(scrollPos*.003);
+        }
+
+    },
+
+    toggleTheme(){
+
+        this.state.theme=
+            this.state.theme==='dark'
+            ? 'light'
+            : 'dark';
+
+        this.html.setAttribute(
+            'data-theme',
+            this.state.theme
+        );
+
+        const icon=this.themeBtn.querySelector('i');
+
+        if(this.state.theme==='light'){
+
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+
+        }else{
+
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+
+        }
+
+    },
+
+    updateCalcState(type,value){
+
+        this.state.calculator[type]=parseInt(value);
+
+        if(type==='drive'){
+            this.driveVal.innerText=value;
+        }
+
+        if(type==='meat'){
+            this.meatVal.innerText=value;
+        }
+
+        this.calculateFootprint();
+    },
+
+    calculateFootprint(){
+
+        const {drive,meat}=this.state.calculator;
+
+        const driveFactor=.02;
+        const meatFactor=.15;
+        const baseCarbon=2.5;
+
+        let total=
+            baseCarbon+
+            (drive*driveFactor)+
+            (meat*meatFactor);
+
+        total=total.toFixed(1);
+
+        this.animateValue(
+            this.totalOutput,
+            parseFloat(this.totalOutput.innerText),
+            total,
+            300
+        );
+
+        if(total<5){
+
+            this.feedbackText.innerText=
+                'Optimal. You are operating below the global average.';
+
+            this.feedbackText.style.color=
+                'var(--accent-primary)';
+
+        }else if(total<8){
+
+            this.feedbackText.innerText=
+                'Moderate. Consider optimization strategies.';
+
+            this.feedbackText.style.color='#f59e0b';
+
+        }else{
+
+            this.feedbackText.innerText=
+                'Critical. Carbon output exceeds sustainable limits.';
+
+            this.feedbackText.style.color='#ef4444';
+
+        }
+
+    },
+
+    animateValue(obj,start,end,duration){
+
+        let startTimestamp=null;
+
+        const step=(timestamp)=>{
+
+            if(!startTimestamp){
+                startTimestamp=timestamp;
+            }
+
+            const progress=Math.min(
+                (timestamp-startTimestamp)/duration,
+                1
+            );
+
+            obj.innerHTML=
+                (
+                    progress*(end-start)+start
+                ).toFixed(1);
+
+            if(progress<1){
+                requestAnimationFrame(step);
+            }
+
+        };
+
+        requestAnimationFrame(step);
+
+    },
+
+    initObserver(){
+
+        const observer=new IntersectionObserver(
+            (entries,obs)=>{
+
+                entries.forEach(entry=>{
+
+                    if(entry.isIntersecting){
+
+                        if(
+                            entry.target.classList.contains(
+                                'dynamic-counter'
+                            )
+                        ){
+
+                            const targetVal=parseInt(
+                                entry.target.getAttribute('data-target')
+                            );
+
+                            this.animateValue(
+                                entry.target,
+                                0,
+                                targetVal,
+                                2000
+                            );
+
+                            obs.unobserve(entry.target);
+
+                        }
+
+                    }
+
+                });
+
+            },
+            {
+                threshold:.1
+            }
+        );
+
+        this.counters.forEach(counter=>{
+            observer.observe(counter);
+        });
+
+    }
+
+};
+
+document.addEventListener(
+    'DOMContentLoaded',
+    ()=>App.init()
+);
+
+/* NAV BUTTONS */
+
+document.querySelectorAll('.btn-primary').forEach(btn=>{
+
+    btn.addEventListener('click',(e)=>{
+
+        if(btn.textContent.includes('Deploy')){
+            e.preventDefault();
+            window.location.href='react.html';
+        }
+
+    });
+
+});
+
+document.getElementById('viewDataBtn')
+.addEventListener('click',()=>{
+
+    window.location.href='data.html';
+
+});
+
+document.getElementById('initiateProjectBtn')
+.addEventListener('click',()=>{
+
+    window.location.href='initialize.html';
+
+});
+/* ================= PROTOCOL POPUP ================= */
+
+const protocolData = {
+
+    energy:{
+        title:"Energy Grid <span>Override</span>",
+        description:"AI-powered renewable energy ecosystem controlling smart solar grids.",
+        info:"Energy Grid Override distributes renewable electricity across connected cities using predictive AI balancing systems. The protocol analyzes demand spikes, weather conditions, and battery reserves to optimize energy efficiency in real time.",
+        stats:["84%","2.3M","-45%"],
+        graphs:{
+            1:[30,60,90,120,150,180,220],
+            5:[40,80,130,210,300,420,550],
+            10:[60,120,220,340,500,690,850],
+            max:[80,170,320,520,760,980,1200]
+        }
+    },
+
+    water:{
+        title:"Hydration <span>Matrices</span>",
+        description:"Autonomous purification drones restoring oceans and freshwater systems.",
+        info:"Hydration Matrices deploy underwater AI drones that scan water chemistry, identify toxic contamination, and remove microplastics from marine ecosystems. Real-time monitoring improves biodiversity recovery rates worldwide.",
+        stats:["63%","980K","-31%"],
+        graphs:{
+            1:[20,40,65,90,130,170,210],
+            5:[35,70,120,180,260,350,470],
+            10:[50,110,180,300,450,620,800],
+            max:[80,160,290,480,700,980,1300]
+        }
+    },
+
+    forest:{
+        title:"Predictive <span>Forestry</span>",
+        description:"Machine-learning climate systems restoring forests and biodiversity.",
+        info:"Predictive Forestry uses satellite imaging and climate simulations to determine the best vegetation placement strategy for long-term ecosystem survival. Drone-assisted planting accelerates global reforestation efforts.",
+        stats:["91%","1.4M","+72%"],
+        graphs:{
+            1:[40,70,110,150,200,250,320],
+            5:[60,120,200,320,470,650,860],
+            10:[90,180,320,500,760,1040,1380],
+            max:[130,280,520,820,1200,1680,2200]
+        }
+    }
+};
+
+const popup =
+    document.getElementById("protocol-popup");
+
+const graphLine =
+    document.getElementById("graph-line");
+
+let currentProtocol = "energy";
+let currentMode = "1";
+
+function drawGraph(data){
+
+    const width = 800;
+    const height = 300;
+
+    const max = Math.max(...data);
+
+    const stepX = width / (data.length - 1);
+
+    let points = "";
+
+    data.forEach((value,index)=>{
+
+        const x = index * stepX;
+
+        const y =
+            height -
+            ((value/max) * 240) -
+            20;
+
+        points += `${x},${y} `;
+    });
+
+    graphLine.setAttribute(
+        "points",
+        points
+    );
+}
+
+function openProtocol(protocol){
+
+    currentProtocol = protocol;
+
+    const data =
+        protocolData[protocol];
+
+    document.getElementById("popup-title")
+    .innerHTML = data.title;
+
+    document.getElementById("popup-description")
+    .innerText = data.description;
+
+    document.getElementById("popup-info")
+    .innerText = data.info;
+
+    document.getElementById("popup-stat1")
+    .innerText = data.stats[0];
+
+    document.getElementById("popup-stat2")
+    .innerText = data.stats[1];
+
+    document.getElementById("popup-stat3")
+    .innerText = data.stats[2];
+
+    drawGraph(data.graphs[currentMode]);
+
+    popup.classList.add("active");
+}
+
+document.getElementById("close-popup")
+.addEventListener("click",()=>{
+
+    popup.classList.remove("active");
+
+});
+
+document.querySelectorAll(".mode-btn")
+.forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        document.querySelectorAll(".mode-btn")
+        .forEach(b=>b.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        currentMode =
+            btn.dataset.mode;
+
+        drawGraph(
+            protocolData[currentProtocol]
+            .graphs[currentMode]
+        );
+    });
+
+});
+
+/* FEATURE CARD CLICKS */
+
+const cards =
+    document.querySelectorAll(".feature-card");
+
+cards[0].addEventListener(
+    "click",
+    ()=>openProtocol("energy")
+);
+
+cards[1].addEventListener(
+    "click",
+    ()=>openProtocol("water")
+);
+
+cards[2].addEventListener(
+    "click",
+    ()=>openProtocol("forest")
+);
+
+/* INITIAL GRAPH */
+
+drawGraph(
+    protocolData.energy.graphs[1]
+);
+document
+.getElementById("close-popup")
+.addEventListener("click",()=>{
+
+    document
+    .getElementById("protocol-popup")
+    .classList.remove("active");
+
+});
+/* ================= FOCUS CARD DATA ================= */
+
+const focusData={
+
+    "Clean Air":{
+        description:
+            "Clean air initiatives reduce toxic emissions, improve lung health, and lower climate-changing greenhouse gases across major cities.",
+
+        stats:[
+            {
+                value:"72%",
+                label:"Pollution Reduced"
+            },
+
+            {
+                value:"1.4M",
+                label:"Lives Improved"
+            },
+
+            {
+                value:"320",
+                label:"Cities Monitoring"
+            }
+        ]
+    },
+
+    "Pure Water":{
+        description:
+            "Advanced filtration systems and cleanup missions provide safe drinking water and remove dangerous contaminants from oceans and rivers.",
+
+        stats:[
+            {
+                value:"98K",
+                label:"Liters Saved"
+            },
+
+            {
+                value:"45%",
+                label:"Cleaner Oceans"
+            },
+
+            {
+                value:"120",
+                label:"River Projects"
+            }
+        ]
+    },
+
+    "Wildlife":{
+        description:
+            "Wildlife protection programs restore ecosystems, prevent extinction, and rebuild habitats for endangered species worldwide.",
+
+        stats:[
+            {
+                value:"15K",
+                label:"Animals Protected"
+            },
+
+            {
+                value:"210",
+                label:"Nature Zones"
+            },
+
+            {
+                value:"89%",
+                label:"Habitat Recovery"
+            }
+        ]
+    }
+
+};
+
+/* ================= OPEN FOCUS POPUP ================= */
+
+document.querySelectorAll("#Focus .card")
+.forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        const title=
+            card.querySelector("h3").innerText;
+
+        const data=focusData[title];
+
+        document.getElementById("focus-title")
+        .innerText=title;
+
+        document.getElementById("focus-description")
+        .innerText=data.description;
+
+        document.getElementById("focus-stat1")
+        .innerText=data.stats[0].value;
+
+        document.getElementById("focus-label1")
+        .innerText=data.stats[0].label;
+
+        document.getElementById("focus-stat2")
+        .innerText=data.stats[1].value;
+
+        document.getElementById("focus-label2")
+        .innerText=data.stats[1].label;
+
+        document.getElementById("focus-stat3")
+        .innerText=data.stats[2].value;
+
+        document.getElementById("focus-label3")
+        .innerText=data.stats[2].label;
+
+        document.getElementById("focus-popup")
+        .classList.add("active");
+
+    });
+
+});
+
+/* ================= CLOSE POPUP ================= */
+
+document.getElementById("close-focus-popup")
+.addEventListener("click",()=>{
+
+    document.getElementById("focus-popup")
+    .classList.remove("active");
+
+});
+/* ================= STATS DATA ================= */
+
+const statsData={
+
+    "Trees Planted":{
+        description:
+            "Large-scale reforestation projects help absorb carbon dioxide, restore biodiversity, and cool global temperatures.",
+
+        stats:[
+            {
+                value:"15,000",
+                label:"Trees Active"
+            },
+
+            {
+                value:"420 Tons",
+                label:"CO₂ Absorbed"
+            },
+
+            {
+                value:"58%",
+                label:"Forest Growth"
+            }
+        ]
+    },
+
+    "Liters Water Saved":{
+        description:
+            "Smart water conservation systems reduce waste and preserve freshwater resources for future generations.",
+
+        stats:[
+            {
+                value:"98,000",
+                label:"Liters Preserved"
+            },
+
+            {
+                value:"32%",
+                label:"Water Efficiency"
+            },
+
+            {
+                value:"120",
+                label:"Communities Helped"
+            }
+        ]
+    },
+
+    "CO₂ Reduced (kg)":{
+        description:
+            "Carbon reduction systems lower greenhouse emissions using renewable energy and advanced sustainability technologies.",
+
+        stats:[
+            {
+                value:"5,000kg",
+                label:"Carbon Removed"
+            },
+
+            {
+                value:"84%",
+                label:"Clean Energy"
+            },
+
+            {
+                value:"240",
+                label:"Projects Running"
+            }
+        ]
+    }
+
+};
+
+/* ================= OPEN STATS POPUP ================= */
+
+document.querySelectorAll("#stats .stat")
+.forEach(stat=>{
+
+    stat.addEventListener("click",()=>{
+
+        const title=
+            stat.querySelector("p").innerText;
+
+        const data=statsData[title];
+
+        document.getElementById("stats-popup-title")
+        .innerText=title;
+
+        document.getElementById("stats-popup-description")
+        .innerText=data.description;
+
+        document.getElementById("stats-box1")
+        .innerText=data.stats[0].value;
+
+        document.getElementById("stats-box1-label")
+        .innerText=data.stats[0].label;
+
+        document.getElementById("stats-box2")
+        .innerText=data.stats[1].value;
+
+        document.getElementById("stats-box2-label")
+        .innerText=data.stats[1].label;
+
+        document.getElementById("stats-box3")
+        .innerText=data.stats[2].value;
+
+        document.getElementById("stats-box3-label")
+        .innerText=data.stats[2].label;
+
+        document.getElementById("stats-popup")
+        .classList.add("active");
+
+    });
+
+});
+
+/* ================= CLOSE STATS POPUP ================= */
+
+document.getElementById("close-stats-popup")
+.addEventListener("click",()=>{
+
+    document.getElementById("stats-popup")
+    .classList.remove("active");
+
+});
+/* ================= AI CHAT ================= */
+
+const aiButton=
+document.getElementById("ai-button");
+
+const jarvisPopup=
+document.getElementById("jarvis-popup");
+
+const closeJarvis=
+document.getElementById("close-jarvis");
+
+/* OPEN */
+
+aiButton.addEventListener("click",()=>{
+
+    jarvisPopup.classList.add("active");
+
+    /* START VOICE CONTROL */
+    document
+.getElementById("jarvis-help")
+.classList.add("active");
+
+    if(window.startEcoVoiceControl){
+
+        window.startEcoVoiceControl();
+
+    }
+
+    if(window.MusicJarvis){
+
+        window.MusicJarvis.prime();
+
+    }
+
+});
+
+/* CLOSE */
+
+closeJarvis.addEventListener("click",()=>{
+
+    jarvisPopup.classList.remove("active");
+
+    /* STOP VOICE CONTROL */
+    document
+.getElementById("jarvis-help")
+.classList.remove("active");
+
+    if(window.stopEcoVoiceControl){
+
+        window.stopEcoVoiceControl();
+
+    }
+
+});
+/* OPEN CHAT */
+
+aiButton.addEventListener("click",()=>{
+
+    document
+    .getElementById("jarvis-popup")
+    .classList.add("active");
+
+});
+const aiInput =
+document.getElementById("ai-input");
+
+const aiMessages =
+document.getElementById("ai-messages");
+
+const sendAI =
+document.getElementById("send-ai");
+/* SEND MESSAGE */
+async function sendMessage(){
+
+    const text=aiInput.value.trim();
+
+    if(text==="") return;
+
+    /* USER MESSAGE */
+
+    const userMessage=
+    document.createElement("div");
+
+    userMessage.className=
+    "ai-message user";
+
+    userMessage.innerText=text;
+
+    aiMessages.appendChild(userMessage);
+
+    /* BOT RESPONSE */
+
+    const botMessage=
+    document.createElement("div");
+
+    botMessage.className=
+    "ai-message bot";
+
+    let response=
+    "EcoPulse AI is analyzing your sustainability question.";
+
+    if(window.MusicJarvis && window.MusicJarvis.looksLikeMusicRequest(text)){
+
+        response = await window.MusicJarvis.handleTextCommand(text);
+
+    }else if(text.toLowerCase().includes("carbon")){
+
+        response=
+        "Reducing transport emissions and using renewable energy are two of the fastest ways to lower carbon output.";
+
+    }else if(text.toLowerCase().includes("water")){
+
+        response=
+        "Freshwater conservation systems and smart irrigation can significantly reduce global water waste.";
+
+    }else if(text.toLowerCase().includes("forest")){
+
+        response=
+        "Forests absorb massive amounts of CO₂ and help regulate planetary temperatures.";
+
+    }else if(text.toLowerCase().includes("energy")){
+
+        response=
+        "Solar, wind, and smart-grid systems are rapidly transforming global energy infrastructure.";
+
+    }
+
+    setTimeout(()=>{
+
+        botMessage.innerText=response;
+
+        aiMessages.appendChild(botMessage);
+
+        aiMessages.scrollTop=
+        aiMessages.scrollHeight;
+
+    },600);
+
+    aiInput.value="";
+
+    aiMessages.scrollTop=
+    aiMessages.scrollHeight;
+
+}
+/* ENTER KEY */
+
+aiInput.addEventListener(
+    "keypress",
+    (e)=>{
+
+        if(e.key==="Enter"){
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+/* ================= AUTO START VOICE ================= */
+
+window.addEventListener("load",()=>{
+
+    if(window.startEcoVoiceControl){
+
+        setTimeout(()=>{
+
+            window.startEcoVoiceControl();
+
+        },1500);
+
+    }
+
+});
+const micBtn = document.getElementById("micBtn");
+
+if(micBtn){
+
+    micBtn.addEventListener("click", () => {
+
+        if(window.startEcoVoiceControl){
+
+            startEcoVoiceControl();
+
+            console.log("VOICE CONTROL CONNECTED");
+
+        }
+
+    });
+
+}
+
+/* ================= AI CHAT VARIABLES ================= */
+/* ================= SEND BUTTON ================= */
+
+if(sendAI){
+
+    sendAI.addEventListener(
+        "click",
+        sendMessage
+    );
+
+}
+
+/* ================= MUSIC SYSTEM ================= */
+
+const MusicJarvis = {
+
+    audio:document.getElementById("jarvis-music-player"),
+    button:document.getElementById("music-button"),
+    panel:document.getElementById("music-panel"),
+    input:document.getElementById("music-input"),
+    playBtn:document.getElementById("music-play-btn"),
+    pauseBtn:document.getElementById("music-pause-btn"),
+    stopBtn:document.getElementById("music-stop-btn"),
+    status:document.getElementById("music-status"),
+    lastTrack:null,
+    requestId:0,
+    primed:false,
+
+    library:{
+        "acelerada":"acelerada song",
+        "alor on danse":"alors on danse stromae",
+        "astronaut in the ocean":"astronaut in the ocean masked wolf",
+        "attention":"attention charlie puth",
+        "city of roses":"city of roses song",
+        "gata only":"gata only floyymenor cris mj",
+        "gata only x kompa":"gata only x kompa song",
+        "got me singing":"got me singing song",
+        "kingpin":"kingpin song",
+        "lose my mind":"lose my mind song",
+        "matrix":"matrix song",
+        "montagem rugada":"montagem rugada song",
+        "montagem xonada":"montagem xonada song",
+        "she wolf":"she wolf shakira",
+        "taco bell super slowed":"taco bell super slowed song"
+    },
+
+    genres:{
+        "phonk":"phonk music",
+        "rap":"rap music",
+        "drill":"drill music",
+        "pop":"pop music",
+        "chill":"chill music",
+        "lofi":"lofi music",
+        "kompa":"kompa music",
+        "slowed":"slowed music",
+        "dance":"dance music",
+        "sad":"sad music"
+    },
+
+    init(){
+
+        if(this.button){
+            this.button.addEventListener("click",()=>{
+                this.prime();
+                this.panel.classList.toggle("active");
+            });
+        }
+
+        if(this.playBtn){
+            this.playBtn.addEventListener("click",()=>{
+                const query = this.input.value.trim() || "phonk music";
+                this.playFromQuery(query);
+            });
+        }
+
+        if(this.pauseBtn){
+            this.pauseBtn.addEventListener("click",()=>{
+                this.pause();
+            });
+        }
+
+        if(this.stopBtn){
+            this.stopBtn.addEventListener("click",()=>{
+                this.stop();
+            });
+        }
+
+        if(this.input){
+            this.input.addEventListener("keydown",(event)=>{
+                if(event.key === "Enter"){
+                    this.playFromQuery(this.input.value.trim());
+                }
+            });
+        }
+
+        if(this.audio){
+            this.audio.addEventListener("ended",()=>{
+                this.setStatus("Preview ended. Say another song or press Play again.");
+            });
+
+            this.audio.addEventListener("play",()=>{
+                if(this.lastTrack){
+                    this.setStatus(`Playing ${this.lastTrack.trackName} - ${this.lastTrack.artistName}`);
+                }
+            });
+
+            this.audio.addEventListener("pause",()=>{
+                if(this.audio.currentTime > 0 && !this.audio.ended){
+                    this.setStatus("Music paused.");
+                }
+            });
+        }
+
+        document.addEventListener("click",()=>{
+            this.prime();
+        },{once:true});
+
+        const helpBox = document.getElementById("jarvis-help");
+
+        if(helpBox){
+            [
+                "“play astronaut in the ocean”",
+                "“play attention”",
+                "“play phonk music”",
+                "“pause music”",
+                "“resume music”",
+                "“stop music”"
+            ].forEach(text=>{
+                const command = document.createElement("p");
+                command.innerText = text;
+                helpBox.appendChild(command);
+            });
+        }
+    },
+
+    prime(){
+
+        if(this.primed || !this.audio){
+            return;
+        }
+
+        this.audio.volume = 0.9;
+
+        const silent =
+            "data:audio/mp3;base64,SUQzAwAAAAAAF1RTU0UAAAAPAAADTGF2ZjU2LjI0LjEwNAAAAAAAAAAAAAAA//uQZAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAFAAAGhgAICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgP/7kGQAA";
+
+        this.audio.src = silent;
+
+        this.audio.play()
+        .then(()=>{
+            this.audio.pause();
+            this.audio.removeAttribute("src");
+            this.audio.load();
+            this.primed = true;
+            this.setStatus("Music system ready.");
+        })
+        .catch(()=>{
+            this.setStatus("Tap Music once, then use voice commands to play songs.");
+        });
+    },
+
+    normalize(text){
+        return text
+            .toLowerCase()
+            .replace(/[^\w\s]/g," ")
+            .replace(/\s+/g," ")
+            .trim();
+    },
+
+    extractSongQuery(text){
+
+        const normalized = this.normalize(text);
+
+        if(this.library[normalized]){
+            return this.library[normalized];
+        }
+
+        const playMatch = normalized.match(/(?:play|start|put on)\s+(.+)/);
+
+        if(playMatch && playMatch[1]){
+            const direct = playMatch[1].trim();
+
+            if(this.library[direct]){
+                return this.library[direct];
+            }
+
+            const genre = direct
+                .replace(/\bmusic\b/g,"")
+                .trim();
+
+            if(this.genres[genre]){
+                return this.genres[genre];
+            }
+
+            return direct;
+        }
+
+        if(this.genres[normalized]){
+            return this.genres[normalized];
+        }
+
+        return normalized;
+    },
+
+    looksLikeMusicRequest(text){
+
+        const normalized = this.normalize(text);
+
+        return (
+            normalized.startsWith("play ") ||
+            normalized.startsWith("start ") ||
+            normalized.startsWith("put on ") ||
+            normalized === "pause music" ||
+            normalized === "resume music" ||
+            normalized === "continue music" ||
+            normalized === "stop music" ||
+            normalized === "mute music" ||
+            normalized === "unmute music" ||
+            normalized in this.library ||
+            normalized in this.genres
+        );
+    },
+
+    setStatus(message){
+        if(this.status){
+            this.status.innerText = message;
+        }
+    },
+
+    speak(message){
+        if(!("speechSynthesis" in window)){
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+    },
+
+    jsonp(url){
+        return new Promise((resolve,reject)=>{
+
+            const callbackName =
+                `jarvisMusicSearch_${Date.now()}_${Math.floor(Math.random()*100000)}`;
+
+            const script =
+                document.createElement("script");
+
+            const cleanup = ()=>{
+                delete window[callbackName];
+                script.remove();
+            };
+
+            window[callbackName] = (data)=>{
+                cleanup();
+                resolve(data);
+            };
+
+            script.onerror = ()=>{
+                cleanup();
+                reject(new Error("Music search failed."));
+            };
+
+            script.src =
+                `${url}${url.includes("?") ? "&" : "?"}callback=${callbackName}`;
+
+            document.body.appendChild(script);
+        });
+    },
+
+    pickBestResult(query,results){
+
+        const normalizedQuery = this.normalize(query);
+
+        const scored = results.map(item=>{
+            const title = this.normalize(item.trackName || "");
+            const artist = this.normalize(item.artistName || "");
+            const combo = `${title} ${artist}`;
+
+            let score = 0;
+
+            if(title === normalizedQuery){
+                score += 10;
+            }
+
+            if(combo.includes(normalizedQuery)){
+                score += 6;
+            }
+
+            normalizedQuery.split(" ").forEach(word=>{
+                if(title.includes(word)){
+                    score += 2;
+                }
+                if(artist.includes(word)){
+                    score += 1;
+                }
+            });
+
+            return {
+                item,
+                score
+            };
+        });
+
+        scored.sort((a,b)=>b.score-a.score);
+
+        return scored[0]?.item || results[0] || null;
+    },
+
+    async searchTrack(query){
+
+        const url =
+            `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&country=US&limit=10`;
+
+        const data = await this.jsonp(url);
+
+        if(!data || !Array.isArray(data.results) || data.results.length === 0){
+            return null;
+        }
+
+        return this.pickBestResult(query,data.results);
+    },
+
+    async playFromQuery(query){
+
+        const cleaned = (query || "").trim();
+
+        if(cleaned === ""){
+            this.setStatus("Say or type a song name first.");
+            return "Say or type a song name first.";
+        }
+
+        this.prime();
+
+        const songQuery = this.extractSongQuery(cleaned);
+        const currentRequest = ++this.requestId;
+
+        this.setStatus(`Searching for ${cleaned}...`);
+
+        try{
+
+            const match = await this.searchTrack(songQuery);
+
+            if(currentRequest !== this.requestId){
+                return "Skipping older search.";
+            }
+
+            if(!match || !match.previewUrl){
+                this.setStatus(`No preview found for ${cleaned}. Try a different spelling or another song.`);
+                return `I could not find a playable preview for ${cleaned}.`;
+            }
+
+            this.audio.src = match.previewUrl;
+
+localStorage.setItem(
+    "jarvis_music_src",
+    match.previewUrl
+);
+
+localStorage.setItem(
+    "jarvis_music_time",
+    "0"
+);
+
+await this.audio.play();
+
+/* SAVE CURRENT TIME */
+
+this.audio.addEventListener("timeupdate",()=>{
+
+    localStorage.setItem(
+        "jarvis_music_time",
+        this.audio.currentTime
+    );
+
+});
+    
+            this.lastTrack = match;
+
+            const message = `Playing ${match.trackName} by ${match.artistName}.`;
+            this.setStatus(message);
+            return message;
+
+        }catch(error){
+
+            this.setStatus("Could not load music right now.");
+            return "I could not load music right now.";
+
+        }
+    },
+
+    pause(){
+        if(this.audio && !this.audio.paused){
+            this.audio.pause();
+        }
+        return "Music paused.";
+    },
+
+    async resume(){
+        if(this.audio && this.audio.src){
+            await this.audio.play();
+            return "Resuming music.";
+        }
+
+        return "There is no music ready to resume yet.";
+    },
+
+    stop(){
+        if(this.audio){
+            this.audio.pause();
+            this.audio.currentTime = 0;
+        }
+
+        this.setStatus("Music stopped.");
+        return "Music stopped.";
+    },
+
+    async handleTextCommand(text){
+
+        const normalized = this.normalize(text);
+
+        if(normalized === "pause music"){
+            return this.pause();
+        }
+
+        if(normalized === "resume music" || normalized === "continue music"){
+            return this.resume();
+        }
+
+        if(normalized === "stop music"){
+            return this.stop();
+        }
+
+        if(normalized === "mute music"){
+            this.audio.muted = true;
+            this.setStatus("Music muted.");
+            return "Music muted.";
+        }
+
+        if(normalized === "unmute music"){
+            this.audio.muted = false;
+            this.setStatus("Music unmuted.");
+            return "Music unmuted.";
+        }
+
+        return this.playFromQuery(text);
+    }
+
+};
+
+window.MusicJarvis = MusicJarvis;
+MusicJarvis.init();
+
+/* ================= VOICE SYSTEM ================= */
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(SpeechRecognition){
+
+    console.log("VOICE SYSTEM READY");
+
+    const siteRecognition =
+    new SpeechRecognition();
+
+    siteRecognition.lang = "en-US";
+
+    siteRecognition.continuous = true;
+
+    siteRecognition.interimResults = false;
+
+    let voiceActive = false;
+
+    /* START VOICE */
+
+    window.startEcoVoiceControl = function(){
+
+        if(!voiceActive){
+
+            siteRecognition.start();
+
+            voiceActive = true;
+
+            console.log("VOICE STARTED");
+
+        }
+
+    };
+
+    /* STOP VOICE */
+
+    window.stopEcoVoiceControl = function(){
+
+        voiceActive = false;
+
+        siteRecognition.stop();
+
+        console.log("VOICE STOPPED");
+
+    };
+
+    /* AUTO RESTART */
+
+    siteRecognition.onend = ()=>{
+
+        if(voiceActive){
+
+            siteRecognition.start();
+
+        }
+
+    };
+
+    /* RESULTS */
+
+    siteRecognition.onresult = async (event)=>{
+
+        const transcript =
+        event.results[
+            event.results.length - 1
+        ][0].transcript.toLowerCase();
+
+        console.log(
+            "VOICE:",
+            transcript
+        );
+
+        if(window.MusicJarvis && window.MusicJarvis.looksLikeMusicRequest(transcript)){
+
+            const response = await window.MusicJarvis.handleTextCommand(transcript);
+            window.MusicJarvis.speak(response);
+            return;
+
+        }
+
+        /* HOME */
+
+        if(
+            transcript.includes("home")
+        ){
+
+            document
+            .getElementById("home")
+            ?.scrollIntoView({
+                behavior:"smooth"
+            });
+
+        }
+        else if(
+    transcript.includes("show core") ||
+    transcript.includes("open core protocols")
+){
+
+    document
+    .getElementById("mission")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+        /* STATS */
+
+        else if(
+            transcript.includes("show stats")
+        ){
+
+            document
+            .getElementById("stats")
+            ?.scrollIntoView({
+                behavior:"smooth"
+            });
+
+        }
+
+        /* CARBON MODEL */
+
+        else if(
+            transcript.includes("carbon model") ||
+            transcript.includes("calculator")
+        ){
+
+            document
+            .getElementById("calculator")
+            ?.scrollIntoView({
+                behavior:"smooth"
+            });
+
+        }
+
+        /* FOCUS */
+
+        else if(
+            transcript.includes("focus")
+        ){
+
+            document
+            .getElementById("Focus")
+            ?.scrollIntoView({
+                behavior:"smooth"
+            });
+
+        }
+
+        /* OPEN ENERGY */
+
+        else if(
+            transcript.includes("open energy")
+        ){
+
+            openProtocol("energy");
+
+        }
+
+        /* OPEN WATER */
+
+        else if(
+            transcript.includes("open water")
+        ){
+
+            openProtocol("water");
+
+        }
+
+        /* OPEN FOREST */
+
+        else if(
+            transcript.includes("open forest")
+        ){
+
+            openProtocol("forest");
+
+        }
+
+        /* LIGHT MODE */
+
+        else if(
+            transcript.includes("light mode")
+        ){
+
+            document.documentElement
+            .setAttribute(
+                "data-theme",
+                "light"
+            );
+
+        }
+
+        /* DARK MODE */
+
+        else if(
+            transcript.includes("dark mode")
+        ){
+
+            document.documentElement
+            .setAttribute(
+                "data-theme",
+                "dark"
+            );
+
+        }
+
+        /* SCROLL DOWN */
+
+        else if(
+            transcript.includes("scroll down")
+        ){
+
+            window.scrollBy({
+                top:700,
+                behavior:"smooth"
+            });
+
+        }
+
+        /* SCROLL UP */
+
+        else if(
+            transcript.includes("scroll up")
+        ){
+
+            window.scrollBy({
+                top:-700,
+                behavior:"smooth"
+            });
+
+        }
+
+        /* CLOSE POPUPS */
+
+        else if(
+            transcript.includes("close popup") ||
+            transcript.includes("close window")
+        ){
+
+            document
+            .querySelectorAll(
+                ".protocol-popup, .focus-popup, .stats-popup, .jarvis-popup"
+            )
+            .forEach(popup=>{
+
+                popup.classList.remove(
+                    "active"
+                );
+
+            });
+
+        }
+
+    };
+
+    /* ERRORS */
+
+    siteRecognition.onerror = (e)=>{
+
+        console.log(
+            "VOICE ERROR:",
+            e.error
+        );
+
+    };
+
+}
+
+/* ================= AI BUTTON ================= */
+
+if(aiButton){
+
+    aiButton.addEventListener(
+        "click",
+        ()=>{
+
+            jarvisPopup.classList.add(
+                "active"
+            );
+
+            if(
+                window.startEcoVoiceControl
+            ){
+
+                window.startEcoVoiceControl();
+
+            }
+
+        }
+    );
+
+}
+
+/* ================= CLOSE AI ================= */
+
+if(closeJarvis){
+
+    closeJarvis.addEventListener(
+        "click",
+        ()=>{
+
+            jarvisPopup.classList.remove(
+                "active"
+            );
+
+            if(
+                window.stopEcoVoiceControl
+            ){
+
+                window.stopEcoVoiceControl();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ================= WEATHER SYSTEM ================= */
+
+/* BUTTON */
+
+const weatherButton =
+document.getElementById("weather-button");
+
+/* POPUP */
+
+const weatherPopup =
+document.getElementById("weather-popup");
+
+/* CLOSE BUTTON */
+
+const closeWeather =
+document.getElementById("close-weather");
+
+/* WEATHER FRAME */
+
+const weatherFrame =
+document.querySelector(".weather-frame");
+
+/* ================= OPEN WEATHER ================= */
+
+if(weatherButton){
+
+    weatherButton.addEventListener("click",()=>{
+
+        console.log("OPENING WEATHER");
+
+        /* OPEN POPUP */
+
+        if(weatherPopup){
+
+            weatherPopup.classList.add("active");
+
+        }
+
+    });
+
+}
+
+/* ================= CLOSE WEATHER ================= */
+
+if(closeWeather){
+
+    closeWeather.addEventListener("click",()=>{
+
+        console.log("CLOSING WEATHER");
+
+        if(weatherPopup){
+
+            weatherPopup.classList.remove("active");
+
+        }
+
+    });
+
+}
+
+/* ================= ESC KEY CLOSE ================= */
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key === "Escape"){
+
+        if(weatherPopup){
+
+            weatherPopup.classList.remove("active");
+
+        }
+
+        if(MusicJarvis.panel){
+            MusicJarvis.panel.classList.remove("active");
+        }
+
+    }
+
+});
+
+/* ================= CLICK OUTSIDE CLOSE ================= */
+
+window.addEventListener("click",(e)=>{
+
+    if(e.target === weatherPopup){
+
+        weatherPopup.classList.remove("active");
+
+    }
+
+});
+
+</script>
+<script>
+
+window.addEventListener("beforeunload",()=>{
+
+    const audio =
+        document.getElementById(
+            "jarvis-music-player"
+        );
+
+    if(audio){
+
+        localStorage.setItem(
+            "jarvis_music_time",
+            audio.currentTime
+        );
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

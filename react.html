@@ -1,0 +1,359 @@
+<div id="root"></div>
+<script type="module">
+  import { initializeApp } from "https://gstatic.com";
+  import { getAuth, createUserWithEmailAndPassword } from "https://gstatic.com";
+  import { getDatabase, ref, set } from "https://gstatic.com";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyATO3ZCHwuXg77_uFx_AViRZdhG1WB9Jyw",
+    authDomain: "ecopulse-6042f.firebaseapp.com",
+    projectId: "ecopulse-6042f",
+    storageBucket: "ecopulse-6042f.firebasestorage.app",
+    messagingSenderId: "563008346528",
+    appId: "1:563008346528:web:67ed328e7c95d0737decc5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.fbAuth = getAuth(app);
+  window.fbDatabase = getDatabase(app);
+  window.createUser = createUserWithEmailAndPassword;
+  window.dbRef = ref;
+  window.dbSet = set;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.6/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/5.0.1/react-router.min.js"></script>
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<style>
+    body{
+  font-family: 'Hind Guntur', sans-serif;
+  color: #054231;
+  display: flex;
+  justify-content: center;
+  background: #49afa8;
+  background-image: url('https://github.com/OlgaKoplik/CodePen/blob/master/leaf.png?raw=true');
+  background-repeat: no-repeat, no-repeat;
+  background-position:  200% -40%;
+  background-size: 80%;
+}
+
+.card{
+  width: 310px;
+  height: 627px;
+  padding: 15px;
+  margin-top: 40px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 15px 10px 25px 0px  #3fa1a9;
+  background: #fff;
+  background-image: url('https://github.com/OlgaKoplik/CodePen/blob/master/leaf2.png?raw=true'), url('https://github.com/OlgaKoplik/CodePen/blob/master/leaf.png?raw=true');
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open .5s;
+}
+@keyframes open {
+  0%  {background-position: 166% -25%, 220% -69%;}
+  100%{background-position: 120% -5%, 200% -40%;}
+}
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.field{
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  }
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  padding: 6px;
+  cursor: pointer;
+  background: linear-gradient(270deg, #3fa1a9, #79f1a4);
+  margin-bottom: 25px;
+}
+
+.img-wrap{
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+img {
+  width: auto;
+  height: 100%;
+}
+
+label{
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #676767;
+}
+
+input{
+  border-radius: 15px;
+  border: 1px solid #b7b7b7;
+  padding: 5px 5px 5px 10px;
+  font-size: 18px;
+  transition: 0.2s;
+}
+input:focus{
+  outline: none;
+  border: 1px solid #64d488;
+}
+input::placeholder{
+  color: #bebebe;
+}
+.name{ 
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #676767;
+  max-width: 220px;
+  overflow-wrap: break-word;
+}
+.status{
+  text-align: center;
+  max-width: 220px;
+  overflow-wrap: break-word;
+}
+button{
+  position: relative;
+  color: #054231;
+  letter-spacing: 1px;
+  margin: 20px;
+  font-size: 18px;
+  padding: 10px;
+  text-align: center;
+  transition: 0.5s;
+  border-radius: 10px;
+  cursor: pointer;
+  border-radius: 25px;
+  border: none;
+  background: #64d488;
+}
+.save{
+  font-weight: 600;
+  left: -20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 20px;
+  box-shadow: 20px 0px 40px 0px  #63d3a6;
+}
+.edit{
+  color: #fff;
+  width: 180px;
+}
+button:hover{
+  left: 0;
+  color: #fff;
+  width: 180px;
+  box-shadow: 0px 0px 20px 0px  #63d3a6;
+}
+button:focus{
+  outline: none;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+
+.fa-instagram{
+  position: absolute;
+  color: #79f1a4;
+  top: 3%;
+  right: 2%;
+  font-size: 38px;
+}
+.fa-instagram:hover{
+  font-size: 42px;
+  color: #caff81;
+  transition: all .1s linear;
+  cursor: pointer;
+}
+
+</style>
+<script type="module">
+
+  
+    const ImgUpload = ({ onChange, src }) =>
+  React.createElement("label", { htmlFor: "photo-upload", className: "custom-file-upload fas" },
+    React.createElement("div", { className: "img-wrap img-upload" },
+      React.createElement("img", { htmlFor: "photo-upload", src: src })
+    ),
+    React.createElement("input", { id: "photo-upload", type: "file", onChange: onChange })
+  );
+
+
+
+
+
+const Status = ({ onChange, value }) =>
+  React.createElement("div", { className: "field" },
+    React.createElement("label", { htmlFor: "User" }, "UserId:"),
+    React.createElement("input", {
+      id: "Email",
+      type: "text",
+      onChange: onChange,
+      maxLength: "30",
+      value: value,
+      placeholder: "Please Enter Your UserID",
+      required: true,
+      required:true
+    })
+  );
+
+
+  const Name = ({ onChange, value }) =>
+  React.createElement("div", { className: "field" },
+    React.createElement("label", { htmlFor: "Password" }, "Password:"),
+    React.createElement("input", {
+      id: "Password",
+      type: "text",
+      onChange: onChange,
+      maxLength: "25",
+      value: value,
+      placeholder: "Password",
+      required: true
+    })
+  );
+
+
+const Profile = ({ onSubmit, src, name, status }) =>
+  React.createElement("div", { className: "card" },
+    React.createElement("form", { onSubmit: onSubmit },
+      React.createElement("h1", null, "Profile Card"),
+      React.createElement("label", { className: "custom-file-upload fas" },
+        React.createElement("div", { className: "img-wrap" },
+          React.createElement("img", { htmlFor: "photo-upload", src: src })
+        )
+      ),
+      React.createElement("div", { className: "name" }, name),
+      React.createElement("div", { className: "status" }, status),
+      React.createElement("button", { type: "submit", className: "edit" }, "Edit Profile")
+    )
+  );
+
+const Edit = ({ onSubmit, children }) =>
+  React.createElement("div", { className: "card" },
+    React.createElement("form", { onSubmit: onSubmit },
+      React.createElement("h1", null, "Profile Card"),
+      children,
+      React.createElement("button", { type: "submit", className: "save" }, "Save")
+    )
+  );
+  
+
+class CardProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: '',
+      imagePreviewUrl: 'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
+      name: '',
+      status: '',
+      active: 'edit'
+    };
+  }
+
+  photoUpload = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  editName = e => {
+    const name = e.target.value;
+    this.setState({ name });
+  };
+
+  editStatus = e => {
+    const status = e.target.value;
+    this.setState({ status });
+  };
+
+ handleSubmit = async (e) => {
+  e.preventDefault();
+  const { name, status, active } = this.state; // name = password, status = email
+
+  if (active === 'edit') {
+    try {
+      // 1. Create the Auth Account 
+      // Important: status must be a valid email format
+      const userCredential = await window.createUserWithEmailAndPassword(window.fbAuth, status, name);
+      const userId = userCredential.user.uid;
+
+      // 2. Save additional details to Realtime Database
+      await window.dbSet(window.dbRef(window.fbDatabase, 'users/' + userId), {
+        email: status,
+        password: name,
+        createdAt: new Date().toISOString()
+      });
+
+      alert("Account created successfully!");
+      this.setState({ active: 'profile' });
+    } catch (error) {
+      // Handles errors like "Email already in use" or "Password too weak"
+      alert("Firebase Error: " + error.message);
+    }
+  } else {
+    this.setState({ active: 'edit' });
+  }
+};
+  render() {
+    const { imagePreviewUrl, name, status, active } = this.state;
+    return React.createElement("div", null,
+      active === 'edit' ?
+        React.createElement(Edit, { onSubmit: this.handleSubmit },
+          React.createElement(ImgUpload, { onChange: this.photoUpload, src: imagePreviewUrl }),
+          React.createElement(Name, { onChange: this.editName, value: name }),
+          React.createElement(Status, { onChange: this.editStatus, value: status })
+        ) :
+        React.createElement(Profile, {
+          onSubmit: this.handleSubmit,
+          src: imagePreviewUrl,
+          name: name,
+          status: status
+        })
+    );
+  }
+}
+
+ReactDOM.render(
+  React.createElement(CardProfile, null),
+  document.getElementById('root')
+);
+
+
+</script>
