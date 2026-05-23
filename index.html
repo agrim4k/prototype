@@ -4909,27 +4909,33 @@ window.addEventListener("beforeunload",()=>{
 </script>
 <script>
 
-/* ================= FIREBASE ================= */
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyATO3ZCHwuXg77_uFx_AViRZdhG1WB9Jyw",
-  authDomain: "ecopulse-6042f.firebaseapp.com",
-  databaseURL: "https://ecopulse-6042f-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "ecopulse-6042f",
-  storageBucket: "ecopulse-6042f.firebasestorage.app",
-  messagingSenderId: "563008346528",
-  appId: "1:563008346528:web:67ed328e7c95d0737decc5",
-  measurementId: "G-V16SC82V8H"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "ecopulse-6042f.firebaseapp.com",
+    databaseURL: "https://ecopulse-6042f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ecopulse-6042f",
+    storageBucket: "ecopulse-6042f.firebasestorage.app",
+    messagingSenderId: "563008346528",
+    appId: "1:563008346528:web:67ed328e7c95d0737decc5",
+    measurementId: "G-V16SC82V8H"
 };
 
+/* =========================================================
+   INITIALIZE FIREBASE
+========================================================= */
 
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-
 const db = firebase.firestore();
 
-/* ================= ELEMENTS ================= */
+/* =========================================================
+   MULTICHAT ELEMENTS
+========================================================= */
 
 const multichatButton =
 document.getElementById("multichat-button");
@@ -4970,50 +4976,70 @@ document.getElementById("multichat-input");
 const sendMultichat =
 document.getElementById("send-multichat");
 
-/* ================= VARIABLES ================= */
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 let currentFriend = "";
-
 let unsubscribeMessages = null;
 
-/* ================= OPEN ================= */
+/* =========================================================
+   OPEN MULTICHAT
+========================================================= */
 
-multichatButton.addEventListener("click",()=>{
+if(multichatButton){
 
-    multichatPopup.classList.add("active");
+    multichatButton.addEventListener("click",()=>{
 
-});
+        multichatPopup.classList.add("active");
 
-/* ================= CLOSE ================= */
+    });
 
-closeMultichat.addEventListener("click",()=>{
+}
 
-    multichatPopup.classList.remove("active");
+/* =========================================================
+   CLOSE MULTICHAT
+========================================================= */
 
-});
+if(closeMultichat){
 
-/* ================= GOOGLE LOGIN ================= */
+    closeMultichat.addEventListener("click",()=>{
 
-googleLogin.addEventListener("click",async()=>{
+        multichatPopup.classList.remove("active");
 
-    try{
+    });
 
-        const provider =
-        new firebase.auth.GoogleAuthProvider();
+}
 
-        await auth.signInWithPopup(provider);
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
 
-    }catch(error){
+if(googleLogin){
 
-        console.log(error);
+    googleLogin.addEventListener("click",async()=>{
 
-        alert(error.message);
+        try{
 
-    }
+            const provider =
+            new firebase.auth.GoogleAuthProvider();
 
-});
+            await auth.signInWithPopup(provider);
 
-/* ================= AUTH ================= */
+        }catch(error){
+
+            console.log(error);
+            alert(error.message);
+
+        }
+
+    });
+
+}
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
 
 auth.onAuthStateChanged(user=>{
 
@@ -5028,43 +5054,66 @@ auth.onAuthStateChanged(user=>{
         multichatUser.innerText =
         `Logged in as ${user.email}`;
 
+    }else{
+
+        multichatLogin.style.display =
+        "flex";
+
+        multichatRoom.style.display =
+        "none";
+
     }
 
 });
 
-/* ================= CONNECT FRIEND ================= */
+/* =========================================================
+   CONNECT FRIEND
+========================================================= */
 
-connectFriend.addEventListener("click",()=>{
+if(connectFriend){
 
-    const email =
-    friendEmail.value.trim().toLowerCase();
+    connectFriend.addEventListener("click",()=>{
 
-    if(email === ""){
+        const email =
+        friendEmail.value
+        .trim()
+        .toLowerCase();
 
-        alert("Enter friend's email");
+        if(email === ""){
 
-        return;
+            alert("Enter friend's email");
+            return;
 
-    }
+        }
 
-    if(email === auth.currentUser.email){
+        if(!auth.currentUser){
 
-        alert("Cannot chat with yourself");
+            alert("Login first");
+            return;
 
-        return;
+        }
 
-    }
+        if(email === auth.currentUser.email){
 
-    currentFriend = email;
+            alert("Cannot chat with yourself");
+            return;
 
-    activeRoom.innerText =
-    `Chatting with ${currentFriend}`;
+        }
 
-    loadMessages();
+        currentFriend = email;
 
-});
+        activeRoom.innerText =
+        `Chatting with ${currentFriend}`;
 
-/* ================= ROOM ID ================= */
+        loadMessages();
+
+    });
+
+}
+
+/* =========================================================
+   ROOM ID
+========================================================= */
 
 function createRoomId(user1,user2){
 
@@ -5074,113 +5123,180 @@ function createRoomId(user1,user2){
 
 }
 
-/* ================= SEND ================= */
+/* =========================================================
+   SEND MULTICHAT MESSAGE
+========================================================= */
 
-async function sendMessage(){
+async function sendMultichatMessage(){
 
-    const text =
-    multichatInput.value.trim();
+    try{
 
-    if(text === "") return;
+        const text =
+        multichatInput.value.trim();
 
-    const user =
-    auth.currentUser;
+        if(text === "") return;
 
-    const roomId =
-    createRoomId(
-        user.email,
-        currentFriend
-    );
+        if(!auth.currentUser){
 
-    await db
-    .collection("rooms")
-    .doc(roomId)
-    .collection("messages")
-    .add({
-
-        text:text,
-
-        sender:user.email,
-
-        created:Date.now()
-
-    });
-
-    multichatInput.value = "";
-
-}
-
-/* ================= ENTER ================= */
-
-multichatInput.addEventListener(
-    "keypress",
-    (e)=>{
-
-        if(e.key === "Enter"){
-
-            sendMessage();
+            alert("Please login first");
+            return;
 
         }
 
-    }
-);
+        if(currentFriend === ""){
 
-/* ================= LOAD ================= */
-function loadMessages(){
+            alert("Connect a friend first");
+            return;
 
-    const user =
-    auth.currentUser;
+        }
 
-    const roomId =
-    createRoomId(
-        user.email,
-        currentFriend
-    );
+        const user =
+        auth.currentUser;
 
-    db.collection("rooms")
-    .doc(roomId)
-    .collection("messages")
-    .orderBy("created")
+        const roomId =
+        createRoomId(
+            user.email,
+            currentFriend
+        );
 
-    .onSnapshot(snapshot=>{
+        await db
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .add({
 
-        multichatMessages.innerHTML = "";
+            text:text,
 
-        snapshot.forEach(doc=>{
+            sender:user.email,
 
-            const data = doc.data();
-
-            const div =
-            document.createElement("div");
-
-            div.className =
-            data.sender === user.email
-            ? "chat-wrap me"
-            : "chat-wrap other";
-
-            div.innerHTML = `
-
-                <div class="chat-bubble">
-                    ${data.text}
-                </div>
-
-                <div class="chat-time">
-                    ${data.sender}
-                </div>
-
-            `;
-
-            multichatMessages.appendChild(div);
+            created:firebase.firestore.FieldValue.serverTimestamp()
 
         });
 
-        multichatMessages.scrollTop =
-        multichatMessages.scrollHeight;
+        multichatInput.value = "";
 
-    });
+    }catch(error){
+
+        console.log(error);
+        alert(error.message);
+
+    }
 
 }
 
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+if(sendMultichat){
+
+    sendMultichat.addEventListener(
+        "click",
+        sendMultichatMessage
+    );
+
+}
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+if(multichatInput){
+
+    multichatInput.addEventListener(
+        "keypress",
+        (e)=>{
+
+            if(e.key === "Enter"){
+
+                sendMultichatMessage();
+
+            }
+
+        }
+    );
+
+}
+
+/* =========================================================
+   LOAD MESSAGES
+========================================================= */
+
+function loadMessages(){
+
+    try{
+
+        if(!auth.currentUser) return;
+
+        const user =
+        auth.currentUser;
+
+        const roomId =
+        createRoomId(
+            user.email,
+            currentFriend
+        );
+
+        /* UNSUBSCRIBE OLD ROOM */
+
+        if(unsubscribeMessages){
+
+            unsubscribeMessages();
+
+        }
+
+        unsubscribeMessages = db
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .orderBy("created")
+
+        .onSnapshot(snapshot=>{
+
+            multichatMessages.innerHTML = "";
+
+            snapshot.forEach(doc=>{
+
+                const data =
+                doc.data();
+
+                const div =
+                document.createElement("div");
+
+                div.className =
+                data.sender === user.email
+                ? "chat-wrap me"
+                : "chat-wrap other";
+
+                div.innerHTML = `
+
+                    <div class="chat-bubble">
+                        ${data.text}
+                    </div>
+
+                    <div class="chat-time">
+                        ${data.sender}
+                    </div>
+
+                `;
+
+                multichatMessages
+                .appendChild(div);
+
+            });
+
+            multichatMessages.scrollTop =
+            multichatMessages.scrollHeight;
+
+        });
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
 
 </script>
 </body>
