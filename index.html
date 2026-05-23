@@ -5066,9 +5066,9 @@ connectFriend.addEventListener("click",()=>{
 
 /* ================= ROOM ID ================= */
 
-function createRoomId(a,b){
+function createRoomId(user1,user2){
 
-    return [a,b]
+    return [user1,user2]
     .sort()
     .join("_");
 
@@ -5077,14 +5077,6 @@ function createRoomId(a,b){
 /* ================= SEND ================= */
 
 async function sendMessage(){
-
-    if(!currentFriend){
-
-        alert("Connect friend first");
-
-        return;
-
-    }
 
     const text =
     multichatInput.value.trim();
@@ -5100,7 +5092,8 @@ async function sendMessage(){
         currentFriend
     );
 
-    await db.collection("privateChats")
+    await db
+    .collection("rooms")
     .doc(roomId)
     .collection("messages")
     .add({
@@ -5116,13 +5109,6 @@ async function sendMessage(){
     multichatInput.value = "";
 
 }
-
-/* ================= BUTTON ================= */
-
-sendMultichat.addEventListener(
-    "click",
-    sendMessage
-);
 
 /* ================= ENTER ================= */
 
@@ -5140,10 +5126,7 @@ multichatInput.addEventListener(
 );
 
 /* ================= LOAD ================= */
-
 function loadMessages(){
-
-    multichatMessages.innerHTML = "";
 
     const user =
     auth.currentUser;
@@ -5154,65 +5137,40 @@ function loadMessages(){
         currentFriend
     );
 
-    if(unsubscribeMessages){
-
-        unsubscribeMessages();
-
-    }
-
-    unsubscribeMessages =
-    db.collection("privateChats")
+    db.collection("rooms")
     .doc(roomId)
     .collection("messages")
     .orderBy("created")
 
     .onSnapshot(snapshot=>{
 
-        multichatMessages.innerHTML =
-        "";
+        multichatMessages.innerHTML = "";
 
         snapshot.forEach(doc=>{
 
-            const data =
-            doc.data();
+            const data = doc.data();
 
-            const wrap =
+            const div =
             document.createElement("div");
 
-            wrap.className =
+            div.className =
             data.sender === user.email
             ? "chat-wrap me"
             : "chat-wrap other";
 
-            const bubble =
-            document.createElement("div");
+            div.innerHTML = `
 
-            bubble.className =
-            "chat-bubble";
+                <div class="chat-bubble">
+                    ${data.text}
+                </div>
 
-            bubble.innerText =
-            data.text;
+                <div class="chat-time">
+                    ${data.sender}
+                </div>
 
-            const time =
-            document.createElement("div");
+            `;
 
-            time.className =
-            "chat-time";
-
-            const date =
-            new Date(data.created);
-
-            time.innerText =
-            `${data.sender} • ${date.toLocaleTimeString([],{
-                hour:"2-digit",
-                minute:"2-digit"
-            })}`;
-
-            wrap.appendChild(bubble);
-
-            wrap.appendChild(time);
-
-            multichatMessages.appendChild(wrap);
+            multichatMessages.appendChild(div);
 
         });
 
@@ -5222,6 +5180,7 @@ function loadMessages(){
     });
 
 }
+
 
 </script>
 </body>
