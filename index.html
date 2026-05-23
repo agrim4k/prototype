@@ -2544,22 +2544,20 @@ MULTICHAT CSS
 
 .multichat-window{
 
-    width:420px;
-    height:650px;
+    width:100%;
+
+    height:100%;
 
     background:#111827;
 
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:24px;
+    border-radius:28px;
 
     overflow:hidden;
 
     display:flex;
+
     flex-direction:column;
 
-    box-shadow:
-    0 20px 80px rgba(0,0,0,.5);
 }
 
 .multichat-topbar{
@@ -2603,7 +2601,25 @@ MULTICHAT CSS
 
     font-size:18px;
 }
+.multichat-bottombar{
 
+    height:75px;
+
+    min-height:75px;
+
+    background:#1f2937;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    border-top:1px solid rgba(255,255,255,0.08);
+
+    z-index:10;
+
+}
 .multichat-login{
 
     flex:1;
@@ -3230,23 +3246,75 @@ function loadMessages(){
     </div>
 
 </div>
-<button id="multichat-button" class="multichat-float">
-
-    <i class="fa-solid fa-comments"></i>
-
 </button>
-<style>
-    <style>
+<button id="open-multichat">
+    <i class="fa-solid fa-comments"></i>
+</button>
 
-.multichat-float{
+<div class="multichat-popup" id="multichat-popup">
+
+    <div class="multichat-window">
+
+        <!-- TOP BAR -->
+
+        <div class="multichat-topbar">
+
+            <h3>Eco-Pulse Chat</h3>
+
+            <button id="close-multichat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <!-- CHAT CONTENT -->
+
+        <iframe
+            src="chat.html"
+            class="multichat-frame">
+        </iframe>
+
+        <!-- BOTTOM BAR -->
+
+        <div class="multichat-bottombar">
+
+            <button class="multi-nav active">
+                <i class="fa-solid fa-comment"></i>
+                <span>Chats</span>
+            </button>
+
+            <button class="multi-nav">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Friends</span>
+            </button>
+
+            <button class="multi-nav">
+                <i class="fa-solid fa-clock"></i>
+                <span>History</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<style>
+
+/* =========================
+   OPEN BUTTON
+========================= */
+
+#open-multichat{
 
     position:fixed;
 
-    bottom:30px;
-    right:30px;
+    left:300px;
 
-    width:70px;
-    height:70px;
+    bottom:20px;
+
+    width:68px;
+
+    height:68px;
 
     border:none;
 
@@ -3256,25 +3324,282 @@ function loadMessages(){
 
     color:white;
 
-    font-size:28px;
+    font-size:24px;
 
     cursor:pointer;
 
     z-index:999999;
 
     box-shadow:
-    0 10px 30px rgba(16,185,129,.4);
+    0 10px 30px rgba(0,0,0,0.5);
 
-    transition:.3s;
+    transition:0.25s;
+
 }
 
-.multichat-float:hover{
+#open-multichat:hover{
 
     transform:scale(1.08);
 
 }
 
-</style>
+/* =========================
+   POPUP
+========================= */
+
+.multichat-popup{
+
+    position:fixed;
+
+    left:20px;
+
+    bottom:95px;
+
+    width:390px;
+
+    height:680px;
+
+    z-index:999999;
+
+    display:none;
+
+    justify-content:flex-start;
+
+    align-items:flex-end;
+
+    animation:multiFade 0.3s ease;
+
+}
+
+/* WINDOW */
+
+.multichat-window{
+
+    width:100%;
+
+    height:100%;
+
+    background:#111827;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.55),
+    0 0 25px rgba(16,185,129,0.15);
+
+}
+
+/* TOPBAR */
+
+.multichat-topbar{
+
+    height:72px;
+
+    background:linear-gradient(
+        90deg,
+        #10b981,
+        #059669
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 20px;
+
+}
+
+/* TITLE */
+
+.multichat-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.multichat-title h3{
+
+    color:white;
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+/* DOT */
+
+.chat-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:
+    0 0 10px white,
+    0 0 20px white;
+
+}
+
+/* CLOSE */
+
+#close-multichat{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.15);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:0.25s;
+
+}
+
+#close-multichat:hover{
+
+    background:rgba(255,255,255,0.25);
+
+}
+
+/* FRAME */
+
+.multichat-frame{
+
+    width:100%;
+
+    flex:1;
+
+    border:none;
+
+    display:block;
+
+    background:#111827;
+
+    min-height:0;
+
+}
+
+/* BOTTOM NAV */
+
+.multichat-bottombar{
+
+    height:75px;
+
+    background:#1f2937;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+}
+
+/* NAV */
+
+.multi-nav{
+
+    background:none;
+
+    border:none;
+
+    color:#cbd5e1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+.multi-nav span{
+
+    font-size:11px;
+
+}
+
+.multi-nav.active{
+
+    color:#10b981;
+
+}
+
+/* ANIMATION */
+
+@keyframes multiFade{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(20px)
+        scale(0.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0)
+        scale(1);
+
+    }
+
+}
+
+/* MOBILE */
+
+@media(max-width:500px){
+
+    .multichat-popup{
+
+        width:95%;
+
+        height:92vh;
+
+        left:2.5%;
+
+        bottom:10px;
+
+    }
+
+}
 </style>
 <body>
 
@@ -5661,6 +5986,38 @@ window.addEventListener("beforeunload",()=>{
         );
 
     }
+
+});
+
+</script>
+<script>
+
+window.addEventListener("DOMContentLoaded", ()=>{
+
+    const openBtn =
+    document.getElementById("open-multichat");
+
+    const closeBtn =
+    document.getElementById("close-multichat");
+
+    const popup =
+    document.getElementById("multichat-popup");
+
+    /* OPEN */
+
+    openBtn.onclick = ()=>{
+
+        popup.style.display = "flex";
+
+    };
+
+    /* CLOSE */
+
+    closeBtn.onclick = ()=>{
+
+        popup.style.display = "none";
+
+    };
 
 });
 
