@@ -1895,6 +1895,390 @@ footer{
         bottom:85px;
     }
 }
+/* ================= BUTTON ================= */
+
+.multichat-button{
+
+    position:fixed;
+
+    right:95px;
+    bottom:100px;
+
+    width:60px;
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:99999;
+
+    box-shadow:
+    0 0 30px rgba(0,255,136,.5);
+
+}
+
+/* ================= POPUP ================= */
+
+.multichat-popup{
+
+    position:fixed;
+
+    right:95px;
+    bottom:170px;
+
+    width:360px;
+    height:560px;
+
+    background:
+    rgba(10,10,10,.96);
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    display:none;
+
+    flex-direction:column;
+
+    z-index:99999;
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+.multichat-popup.active{
+
+    display:flex;
+
+}
+
+/* ================= HEADER ================= */
+
+.multichat-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+.multichat-header h3{
+
+    margin:0;
+
+    color:white;
+
+}
+
+#close-multichat{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+/* ================= LOGIN ================= */
+
+.multichat-login{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+#google-login{
+
+    border:none;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+}
+
+/* ================= ROOM ================= */
+
+.multichat-room{
+
+    display:none;
+
+    flex-direction:column;
+
+    height:100%;
+
+}
+
+.multichat-user{
+
+    color:#00ff88;
+
+    padding:10px 15px;
+
+    font-size:12px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+/* ================= FRIEND ================= */
+
+.friend-bar{
+
+    display:flex;
+
+    gap:10px;
+
+    padding:12px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+#friend-email{
+
+    flex:1;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    outline:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+}
+
+#connect-friend{
+
+    border:none;
+
+    padding:12px 15px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+}
+
+/* ================= ACTIVE ROOM ================= */
+
+.active-room{
+
+    color:#00ff88;
+
+    font-size:12px;
+
+    padding:10px 15px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+/* ================= MESSAGES ================= */
+
+.multichat-messages{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.chat-wrap{
+
+    display:flex;
+
+    flex-direction:column;
+
+    max-width:80%;
+
+}
+
+.chat-wrap.me{
+
+    align-self:flex-end;
+
+}
+
+.chat-wrap.other{
+
+    align-self:flex-start;
+
+}
+
+.chat-bubble{
+
+    padding:12px 16px;
+
+    border-radius:18px;
+
+    font-size:14px;
+
+    line-height:1.4;
+
+}
+
+.chat-wrap.me .chat-bubble{
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+    color:black;
+
+    border-bottom-right-radius:5px;
+
+}
+
+.chat-wrap.other .chat-bubble{
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+    border-bottom-left-radius:5px;
+
+}
+
+.chat-time{
+
+    font-size:11px;
+
+    margin-top:4px;
+
+    opacity:.7;
+
+    color:white;
+
+}
+
+/* ================= INPUT ================= */
+
+.multichat-input-area{
+
+    display:flex;
+
+    gap:10px;
+
+    padding:15px;
+
+    border-top:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+#multichat-input{
+
+    flex:1;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    outline:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+}
+
+#send-multichat{
+
+    width:50px;
+    height:50px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00ff88,
+        #00c3ff
+    );
+
+}
 </style>
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -2010,23 +2394,23 @@ footer{
     <div id="music-status">Ready for voice commands like “play attention” or “play phonk music”.</div>
     <audio id="jarvis-music-player" preload="none"></audio>
 </div>
-<!-- ================= FIREBASE ================= -->
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<!-- ================= MULTICHAT BUTTON ================= -->
+<!-- MULTICHAT BUTTON -->
 
 <button class="multichat-button" id="multichat-button">
-
     <i class="fa-solid fa-comments"></i>
-
 </button>
 
-<!-- ================= MULTICHAT POPUP ================= -->
+<!-- MULTICHAT POPUP -->
 
 <div class="multichat-popup" id="multichat-popup">
+
+    <!-- HEADER -->
 
     <div class="multichat-header">
 
@@ -2038,7 +2422,7 @@ footer{
 
     </div>
 
-    <!-- ================= LOGIN ================= -->
+    <!-- LOGIN -->
 
     <div class="multichat-login" id="multichat-login">
 
@@ -2052,13 +2436,41 @@ footer{
 
     </div>
 
-    <!-- ================= CHAT ROOM ================= -->
+    <!-- CHAT ROOM -->
 
     <div class="multichat-room" id="multichat-room">
 
+        <!-- USER -->
+
         <div class="multichat-user" id="multichat-user"></div>
 
+        <!-- ADD FRIEND -->
+
+        <div class="friend-bar">
+
+            <input
+                type="email"
+                id="friend-email"
+                placeholder="Enter friend's Gmail"
+            >
+
+            <button id="connect-friend">
+                Connect
+            </button>
+
+        </div>
+
+        <!-- ACTIVE CHAT -->
+
+        <div class="active-room" id="active-room">
+            No friend connected
+        </div>
+
+        <!-- MESSAGES -->
+
         <div class="multichat-messages" id="multichat-messages"></div>
+
+        <!-- INPUT -->
 
         <div class="multichat-input-area">
 
@@ -2080,592 +2492,6 @@ footer{
 
 </div>
 
-<!-- ================= CSS ================= -->
-
-<style>
-
-/* ================= BUTTON ================= */
-
-.multichat-button{
-
-    position:fixed;
-
-    right:95px;
-    bottom:100px;
-
-    width:60px;
-    height:60px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:
-    linear-gradient(
-        135deg,
-        #00ff88,
-        #00c3ff
-    );
-
-    color:white;
-
-    font-size:22px;
-
-    cursor:pointer;
-
-    z-index:99999;
-
-    box-shadow:
-    0 0 30px rgba(0,255,136,.5);
-
-}
-
-/* ================= POPUP ================= */
-
-.multichat-popup{
-
-    position:fixed;
-
-    right:95px;
-    bottom:170px;
-
-    width:350px;
-    height:520px;
-
-    background:
-    rgba(10,10,10,.96);
-
-    border-radius:24px;
-
-    overflow:hidden;
-
-    display:none;
-
-    flex-direction:column;
-
-    z-index:99999;
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(20px);
-
-}
-
-.multichat-popup.active{
-
-    display:flex;
-
-}
-
-/* ================= HEADER ================= */
-
-.multichat-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:15px;
-
-    border-bottom:
-    1px solid rgba(255,255,255,.08);
-
-}
-
-.multichat-header h3{
-
-    color:white;
-
-    margin:0;
-
-}
-
-#close-multichat{
-
-    background:none;
-
-    border:none;
-
-    color:white;
-
-    font-size:22px;
-
-    cursor:pointer;
-
-}
-
-/* ================= LOGIN ================= */
-
-.multichat-login{
-
-    flex:1;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-#google-login{
-
-    border:none;
-
-    padding:14px 22px;
-
-    border-radius:14px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    background:
-    linear-gradient(
-        135deg,
-        #00ff88,
-        #00c3ff
-    );
-
-}
-
-/* ================= ROOM ================= */
-
-.multichat-room{
-
-    display:none;
-
-    flex-direction:column;
-
-    height:100%;
-
-}
-
-/* ================= USER ================= */
-
-.multichat-user{
-
-    color:#00ff88;
-
-    padding:12px;
-
-    font-size:12px;
-
-    border-bottom:
-    1px solid rgba(255,255,255,.06);
-
-}
-
-/* ================= MESSAGES ================= */
-
-.multichat-messages{
-
-    flex:1;
-
-    overflow-y:auto;
-
-    padding:15px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-
-}
-
-.chat-wrap{
-
-    display:flex;
-
-    flex-direction:column;
-
-    max-width:80%;
-
-}
-
-.chat-wrap.me{
-
-    align-self:flex-end;
-
-}
-
-.chat-wrap.other{
-
-    align-self:flex-start;
-
-}
-
-.chat-bubble{
-
-    padding:12px 16px;
-
-    border-radius:18px;
-
-    font-size:14px;
-
-    line-height:1.4;
-
-}
-
-.chat-wrap.me .chat-bubble{
-
-    background:
-    linear-gradient(
-        135deg,
-        #00ff88,
-        #00c3ff
-    );
-
-    color:black;
-
-    border-bottom-right-radius:6px;
-
-}
-
-.chat-wrap.other .chat-bubble{
-
-    background:
-    rgba(255,255,255,.08);
-
-    color:white;
-
-    border-bottom-left-radius:6px;
-
-}
-
-.chat-time{
-
-    margin-top:4px;
-
-    font-size:11px;
-
-    opacity:.7;
-
-    color:white;
-
-}
-
-/* ================= INPUT ================= */
-
-.multichat-input-area{
-
-    display:flex;
-
-    gap:10px;
-
-    padding:15px;
-
-    border-top:
-    1px solid rgba(255,255,255,.08);
-
-}
-
-#multichat-input{
-
-    flex:1;
-
-    border:none;
-
-    outline:none;
-
-    padding:12px;
-
-    border-radius:12px;
-
-    background:
-    rgba(255,255,255,.08);
-
-    color:white;
-
-}
-
-#send-multichat{
-
-    width:48px;
-    height:48px;
-
-    border:none;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(
-        135deg,
-        #00ff88,
-        #00c3ff
-    );
-
-}
-
-</style>
-
-<!-- ================= JAVASCRIPT ================= -->
-
-<script>
-
-/* ================= FIREBASE CONFIG ================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyATO3ZCHwuXg77_uFx_AViRZdhG1WB9Jyw",
-  authDomain: "ecopulse-6042f.firebaseapp.com",
-  databaseURL: "https://ecopulse-6042f-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "ecopulse-6042f",
-  storageBucket: "ecopulse-6042f.firebasestorage.app",
-  messagingSenderId: "563008346528",
-  appId: "1:563008346528:web:67ed328e7c95d0737decc5",
-  measurementId: "G-V16SC82V8H"
-};
-
-/* ================= INIT ================= */
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-
-const db = firebase.firestore();
-
-/* ================= ELEMENTS ================= */
-
-const multichatButton =
-document.getElementById("multichat-button");
-
-const multichatPopup =
-document.getElementById("multichat-popup");
-
-const closeMultichat =
-document.getElementById("close-multichat");
-
-const googleLogin =
-document.getElementById("google-login");
-
-const multichatLogin =
-document.getElementById("multichat-login");
-
-const multichatRoom =
-document.getElementById("multichat-room");
-
-const multichatUser =
-document.getElementById("multichat-user");
-
-const multichatMessages =
-document.getElementById("multichat-messages");
-
-const multichatInput =
-document.getElementById("multichat-input");
-
-const sendMultichat =
-document.getElementById("send-multichat");
-
-/* ================= OPEN ================= */
-
-multichatButton.addEventListener("click",()=>{
-
-    multichatPopup.classList.add("active");
-
-});
-
-/* ================= CLOSE ================= */
-
-closeMultichat.addEventListener("click",()=>{
-
-    multichatPopup.classList.remove("active");
-
-});
-
-/* ================= GOOGLE LOGIN ================= */
-
-googleLogin.addEventListener("click",async()=>{
-
-    const provider =
-    new firebase.auth.GoogleAuthProvider();
-
-    try{
-
-        await auth.signInWithPopup(provider);
-
-    }
-
-    catch(error){
-
-        console.log(error);
-
-        alert(error.message);
-
-    }
-
-});
-
-/* ================= AUTH ================= */
-
-auth.onAuthStateChanged(user=>{
-
-    if(user){
-
-        multichatLogin.style.display =
-        "none";
-
-        multichatRoom.style.display =
-        "flex";
-
-        multichatUser.innerText =
-        `Logged in as ${user.email}`;
-
-        loadMessages(user);
-
-    }
-
-    else{
-
-        multichatLogin.style.display =
-        "flex";
-
-        multichatRoom.style.display =
-        "none";
-
-    }
-
-});
-
-/* ================= SEND MESSAGE ================= */
-
-async function sendMessage(){
-
-    const text =
-    multichatInput.value.trim();
-
-    if(text === "") return;
-
-    const user =
-    auth.currentUser;
-
-    if(!user){
-
-        alert("Please login first");
-
-        return;
-
-    }
-
-    try{
-
-        await db.collection("messages")
-        .add({
-
-            text:text,
-
-            email:user.email,
-
-            uid:user.uid,
-
-            created:Date.now()
-
-        });
-
-        multichatInput.value = "";
-
-    }
-
-    catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-/* ================= SEND BUTTON ================= */
-
-sendMultichat.addEventListener(
-    "click",
-    sendMessage
-);
-
-/* ================= ENTER ================= */
-
-multichatInput.addEventListener(
-    "keypress",
-    (e)=>{
-
-        if(e.key === "Enter"){
-
-            sendMessage();
-
-        }
-
-    }
-);
-
-/* ================= LOAD MESSAGES ================= */
-
-function loadMessages(currentUser){
-
-    db.collection("messages")
-
-    .orderBy("created")
-
-    .onSnapshot(snapshot=>{
-
-        multichatMessages.innerHTML = "";
-
-        snapshot.forEach(doc=>{
-
-            const data =
-            doc.data();
-
-            const wrap =
-            document.createElement("div");
-
-            wrap.className =
-            data.uid === currentUser.uid
-            ? "chat-wrap me"
-            : "chat-wrap other";
-
-            const bubble =
-            document.createElement("div");
-
-            bubble.className =
-            "chat-bubble";
-
-            bubble.innerText =
-            data.text;
-
-            const time =
-            document.createElement("div");
-
-            time.className =
-            "chat-time";
-
-            const date =
-            new Date(data.created);
-
-            time.innerText =
-            `${data.email} • ${date.toLocaleTimeString([],{
-                hour:"2-digit",
-                minute:"2-digit"
-            })}`;
-
-            wrap.appendChild(bubble);
-
-            wrap.appendChild(time);
-
-            multichatMessages.appendChild(wrap);
-
-        });
-
-        multichatMessages.scrollTop =
-        multichatMessages.scrollHeight;
-
-    });
-
-}
-
-</script>
 <!-- WEATHER POPUP -->
 
 <div class="weather-popup" id="weather-popup">
@@ -5081,6 +4907,322 @@ window.addEventListener("beforeunload",()=>{
 });
 
 </script>
+<script>
 
+/* ================= FIREBASE ================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyATO3ZCHwuXg77_uFx_AViRZdhG1WB9Jyw",
+  authDomain: "ecopulse-6042f.firebaseapp.com",
+  databaseURL: "https://ecopulse-6042f-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ecopulse-6042f",
+  storageBucket: "ecopulse-6042f.firebasestorage.app",
+  messagingSenderId: "563008346528",
+  appId: "1:563008346528:web:67ed328e7c95d0737decc5",
+  measurementId: "G-V16SC82V8H"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+/* ================= ELEMENTS ================= */
+
+const multichatButton =
+document.getElementById("multichat-button");
+
+const multichatPopup =
+document.getElementById("multichat-popup");
+
+const closeMultichat =
+document.getElementById("close-multichat");
+
+const googleLogin =
+document.getElementById("google-login");
+
+const multichatLogin =
+document.getElementById("multichat-login");
+
+const multichatRoom =
+document.getElementById("multichat-room");
+
+const multichatUser =
+document.getElementById("multichat-user");
+
+const friendEmail =
+document.getElementById("friend-email");
+
+const connectFriend =
+document.getElementById("connect-friend");
+
+const activeRoom =
+document.getElementById("active-room");
+
+const multichatMessages =
+document.getElementById("multichat-messages");
+
+const multichatInput =
+document.getElementById("multichat-input");
+
+const sendMultichat =
+document.getElementById("send-multichat");
+
+/* ================= VARIABLES ================= */
+
+let currentFriend = "";
+
+let unsubscribeMessages = null;
+
+/* ================= OPEN ================= */
+
+multichatButton.addEventListener("click",()=>{
+
+    multichatPopup.classList.add("active");
+
+});
+
+/* ================= CLOSE ================= */
+
+closeMultichat.addEventListener("click",()=>{
+
+    multichatPopup.classList.remove("active");
+
+});
+
+/* ================= GOOGLE LOGIN ================= */
+
+googleLogin.addEventListener("click",async()=>{
+
+    try{
+
+        const provider =
+        new firebase.auth.GoogleAuthProvider();
+
+        await auth.signInWithPopup(provider);
+
+    }catch(error){
+
+        console.log(error);
+
+        alert(error.message);
+
+    }
+
+});
+
+/* ================= AUTH ================= */
+
+auth.onAuthStateChanged(user=>{
+
+    if(user){
+
+        multichatLogin.style.display =
+        "none";
+
+        multichatRoom.style.display =
+        "flex";
+
+        multichatUser.innerText =
+        `Logged in as ${user.email}`;
+
+    }
+
+});
+
+/* ================= CONNECT FRIEND ================= */
+
+connectFriend.addEventListener("click",()=>{
+
+    const email =
+    friendEmail.value.trim().toLowerCase();
+
+    if(email === ""){
+
+        alert("Enter friend's email");
+
+        return;
+
+    }
+
+    if(email === auth.currentUser.email){
+
+        alert("Cannot chat with yourself");
+
+        return;
+
+    }
+
+    currentFriend = email;
+
+    activeRoom.innerText =
+    `Chatting with ${currentFriend}`;
+
+    loadMessages();
+
+});
+
+/* ================= ROOM ID ================= */
+
+function createRoomId(a,b){
+
+    return [a,b]
+    .sort()
+    .join("_");
+
+}
+
+/* ================= SEND ================= */
+
+async function sendMessage(){
+
+    if(!currentFriend){
+
+        alert("Connect friend first");
+
+        return;
+
+    }
+
+    const text =
+    multichatInput.value.trim();
+
+    if(text === "") return;
+
+    const user =
+    auth.currentUser;
+
+    const roomId =
+    createRoomId(
+        user.email,
+        currentFriend
+    );
+
+    await db.collection("privateChats")
+    .doc(roomId)
+    .collection("messages")
+    .add({
+
+        text:text,
+
+        sender:user.email,
+
+        created:Date.now()
+
+    });
+
+    multichatInput.value = "";
+
+}
+
+/* ================= BUTTON ================= */
+
+sendMultichat.addEventListener(
+    "click",
+    sendMessage
+);
+
+/* ================= ENTER ================= */
+
+multichatInput.addEventListener(
+    "keypress",
+    (e)=>{
+
+        if(e.key === "Enter"){
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+/* ================= LOAD ================= */
+
+function loadMessages(){
+
+    multichatMessages.innerHTML = "";
+
+    const user =
+    auth.currentUser;
+
+    const roomId =
+    createRoomId(
+        user.email,
+        currentFriend
+    );
+
+    if(unsubscribeMessages){
+
+        unsubscribeMessages();
+
+    }
+
+    unsubscribeMessages =
+    db.collection("privateChats")
+    .doc(roomId)
+    .collection("messages")
+    .orderBy("created")
+
+    .onSnapshot(snapshot=>{
+
+        multichatMessages.innerHTML =
+        "";
+
+        snapshot.forEach(doc=>{
+
+            const data =
+            doc.data();
+
+            const wrap =
+            document.createElement("div");
+
+            wrap.className =
+            data.sender === user.email
+            ? "chat-wrap me"
+            : "chat-wrap other";
+
+            const bubble =
+            document.createElement("div");
+
+            bubble.className =
+            "chat-bubble";
+
+            bubble.innerText =
+            data.text;
+
+            const time =
+            document.createElement("div");
+
+            time.className =
+            "chat-time";
+
+            const date =
+            new Date(data.created);
+
+            time.innerText =
+            `${data.sender} • ${date.toLocaleTimeString([],{
+                hour:"2-digit",
+                minute:"2-digit"
+            })}`;
+
+            wrap.appendChild(bubble);
+
+            wrap.appendChild(time);
+
+            multichatMessages.appendChild(wrap);
+
+        });
+
+        multichatMessages.scrollTop =
+        multichatMessages.scrollHeight;
+
+    });
+
+}
+
+</script>
 </body>
 </html>
